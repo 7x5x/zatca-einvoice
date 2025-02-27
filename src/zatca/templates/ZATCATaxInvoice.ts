@@ -1,4 +1,4 @@
-import { XMLDocument } from "../../parser/index.js";
+import { XMLDocument } from "../../utils/index.js";
 import { generateSignedXMLString } from "../signing/index.js";
 import defaultSimplifiedTaxInvoice, {
   ZATCAInvoiceLineItem as ZATCAInvoiceLineItem,

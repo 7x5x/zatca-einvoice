@@ -1,4 +1,4 @@
-import { logger } from "../logger";
+import { logger } from "./logger";
 
 
 export const throwErrorObject = (errorObject: any, log: boolean = true): never => {

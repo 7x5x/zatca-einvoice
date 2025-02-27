@@ -3,12 +3,12 @@ import xmldom from "xmldom";
 import { createHash, createSign, X509Certificate } from "crypto";
 import moment from "moment";
 import { Certificate } from "@fidm/x509";
-import { XMLDocument } from "../../parser/index.js"; 
+import { XMLDocument } from "../../utils/index.js";
 import defaultUBLExtensions from "../templates/ubl_sign_extension_template.js";
 import defaultUBLExtensionsSignedProperties, {
     defaultUBLExtensionsSignedPropertiesForSigning,
 } from "../templates/ubl_extension_signed_properties_template.js"
-import { logger } from "../../logger/index.js";
+import { logger } from "../../utils/logger.js";
 import { generateQR } from "../qr/index.js";
 
 

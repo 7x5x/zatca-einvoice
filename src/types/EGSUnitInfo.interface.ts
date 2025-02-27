@@ -24,3 +24,4 @@ export interface EGSUnitInfo {
     production_certificate?: string;
     production_api_secret?: string;
 }
+

@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import { handleError } from "../utils/handleError";
-import { logger } from "../logger";
+import { logger } from "../utils/logger";
 import { TAuth } from "../types/TAuth";
 
 export enum ZatcaEnvironmentUrl {

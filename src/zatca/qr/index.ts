@@ -1,7 +1,7 @@
 import moment from "moment";
 
-import { XMLDocument } from "../../parser/index.js";
-import { getInvoiceHash } from "../signing/index.js"; 
+import { XMLDocument } from "../../utils/index.js";
+import { getInvoiceHash } from "../signing/index.js";
 
 interface QRParams {
   invoice_xml: XMLDocument;
@@ -41,7 +41,7 @@ export const generateQR = ({
 
   const invoice_total = invoice_xml
     .get("Invoice/cac:LegalMonetaryTotal/cbc:TaxInclusiveAmount")?.[0]
-    ["#text"].toString();
+  ["#text"].toString();
 
   const DOC_Currency_VAT_total = invoice_xml.get("Invoice/cac:TaxTotal")?.[0][
     "cbc:TaxAmount"
@@ -60,7 +60,7 @@ export const generateQR = ({
   // Detect if  invoice or not (not used currently assuming all simplified tax invoice)
   const invoice_type = invoice_xml
     .get("Invoice/cbc:InvoiceTypeCode")?.[0]
-    ["@_name"].toString();
+  ["@_name"].toString();
 
   const datetime = `${issue_date} ${issue_time}`;
   const formatted_datetime =
