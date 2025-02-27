@@ -1,0 +1,33 @@
+{
+  "name": "zatca-api",
+  "version": "1.0.0",
+  "description": "This TypeScript-based NPM package provides a structured, reusable class for integrating with ZATCA's API, allowing users to specify environments and inject custom base URLs. 🚀",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/src/index.js",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ali Al-Gabal",
+  "license": "ISC",
+  "dependencies": {
+    "@fidm/x509": "^1.2.1",
+    "@types/xmldom": "^0.1.34",
+    "axios": "^1.8.1",
+    "decimal.js": "^10.5.0",
+    "dotenv": "^16.4.7",
+    "fast-xml-parser": "^5.0.8",
+    "lodash": "^4.17.21",
+    "moment": "^2.30.1",
+    "xmldom": "^0.6.0",
+    "xmldsigjs": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.4",
+    "@types/decimal.js": "^7.4.3",
+    "@types/lodash": "^4.17.15",
+    "@types/moment": "^2.13.0",
+    "@types/node": "^22.13.5",
+    "typescript": "^5.7.3"
+  }
+}
