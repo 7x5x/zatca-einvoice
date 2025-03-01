@@ -4,14 +4,24 @@ dotenv.config();
 const LOGGING = process.env.LOGGING === "1";
 // const LOG_FILE = "../../logs/invoice.log";
 const LOG_FILE = "logs/invoice.log";
+import { v4 as uuidv4 } from 'uuid';
 
 const MAX_LOG_SIZE = 10 * 1024 * 1024; // 10 MB
 
-export const logger = (type: string, source: string, message: string) => {
+export const activeSessions = new Map<string, string[]>();
+export const logger = (type: string, source: string, message: string, sessionId?: string) => {
     if (!LOGGING) return;
 
-    const logMessage = `\x1b[33m${new Date().toLocaleString()}\x1b[0m: [\x1b[36m${source}\x1b[0m] [\x1b[31m${type}\x1b[0m] ${message}\n`;
+    const currentSessionId = sessionId || uuidv4();
 
+    const timestamp = new Date().toLocaleString();
+    // const logMessage = `\x1b[33m${timestamp}\x1b[0m: [\x1b[36m${source}\x1b[0m] [\x1b[31m${type}\x1b[0m] ${message}\n`;
+    const logMessage = `[${timestamp}] [${source}] [${type}] ${message}`;
+
+    if (!activeSessions.has(currentSessionId)) {
+        activeSessions.set(currentSessionId, []);
+    }
+    activeSessions.get(currentSessionId)?.push(logMessage);
 
     if (fs.existsSync(LOG_FILE) && fs.statSync(LOG_FILE).size > MAX_LOG_SIZE) {
         fs.renameSync(LOG_FILE, `${LOG_FILE}.old`);

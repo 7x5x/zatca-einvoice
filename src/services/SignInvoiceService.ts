@@ -4,9 +4,15 @@ import { throwErrorObject } from "../utils/errorType";
 
 export class SignInvoiceService {
     private private_key: string;
-    private certificate: string | null = null;
+    private certificate: string;
 
     constructor(private_key: string, certificate: string) {
+        
+        if (!certificate || certificate.length === 0 || !private_key || private_key.length === 0)
+            throwErrorObject({
+                message: "EGS is missing a certificate/private key to sign the invoice.",
+            });
+
         this.private_key = private_key;
         this.certificate = certificate;
     }

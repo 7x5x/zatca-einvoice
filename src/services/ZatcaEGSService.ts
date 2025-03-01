@@ -2,7 +2,7 @@ import { ZatcaClient } from '../clients/ZatcaClient'; // Make sure to update the
 import { EGSUnitInfo } from '../types/EGSUnitInfo.interface';
 import { CSRGenerateOptions, IInvoiceType, ZatcaEnvironmentMode, ZATCASigningCSR } from '../zatca/signing/generateCSR';
 
-class ZatcaEGSService {
+export class ZatcaEGSService {
     private zatcaClient: ZatcaClient;
     private egsInfo: EGSUnitInfo;
     private csrOptions: CSRGenerateOptions;
@@ -13,6 +13,7 @@ class ZatcaEGSService {
         egsInfo: EGSUnitInfo,
         environmentMode: ZatcaEnvironmentMode = ZatcaEnvironmentMode.production) {
 
+        this.environmentMode = environmentMode;
         this.zatcaClient = zatcaClient;
         this.egsInfo = egsInfo;
         this.csrOptions = {

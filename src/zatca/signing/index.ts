@@ -1,5 +1,4 @@
 import { XmlCanonicalizer } from "xmldsigjs";
-import xmldom from "xmldom";
 import { createHash, createSign, X509Certificate } from "crypto";
 import moment from "moment";
 import { Certificate } from "@fidm/x509";
@@ -10,6 +9,7 @@ import defaultUBLExtensionsSignedProperties, {
 } from "../templates/ubl_extension_signed_properties_template.js"
 import { logger } from "../../utils/logger.js";
 import { generateQR } from "../qr/index.js";
+import { XMLBuilder, XMLParser } from "fast-xml-parser";
 
 
 /**
@@ -19,25 +19,28 @@ import { generateQR } from "../qr/index.js";
  * @returns purified Invoice XML string.
  */
 export const getPureInvoiceString = (invoice_xml: XMLDocument): string => {
-    const invoice_copy = new XMLDocument(
-        invoice_xml.toString({ no_header: false })
-    );
-    invoice_copy.delete("Invoice/ext:UBLExtensions");
-    invoice_copy.delete("Invoice/cac:Signature");
-    invoice_copy.delete("Invoice/cac:AdditionalDocumentReference", {
-        "cbc:ID": "QR",
-    });
+    // Parse the XML string into a JSON object
+    const parser = new XMLParser();
+    const invoice_xml_json = parser.parse(invoice_xml.toString({ no_header: false }));
 
-    const invoice_xml_dom = new xmldom.DOMParser().parseFromString(
-        invoice_copy.toString({ no_header: false })
-    );
+    // Manipulate the JSON structure (delete specific parts)
+    delete invoice_xml_json.Invoice.ext_UBLExtensions;
+    delete invoice_xml_json.Invoice.cac_Signature;
+    delete invoice_xml_json.Invoice.cac_AdditionalDocumentReference;
 
-    var canonicalizer = new XmlCanonicalizer(false, false);
-    const canonicalized_xml_str: string =
-        canonicalizer.Canonicalize(invoice_xml_dom);
+    // Convert JSON back to XML string
+    const builder = new XMLBuilder();
+    const purified_xml_str = builder.build(invoice_xml_json);
+
+    // Canonicalize the XML string (assuming the function works with the resulting string)
+    const canonicalizer = new XmlCanonicalizer(false, false);
+    const canonicalized_xml_str: string = canonicalizer.Canonicalize(
+        parser.parse(purified_xml_str)
+    );
 
     return canonicalized_xml_str;
 };
+
 
 /**
  * Hashes Invoice according to ZATCA.*/
