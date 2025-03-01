@@ -56,7 +56,7 @@ export class ZatcaClient {
     }
 
 
-    async reportInvoice(uuid: string, invoiceHash: string, invoice: any, cleared: boolean) {
+    async reportInvoice(uuid: string, invoiceHash: string, invoice: any, cleared: boolean=true) {
         return this.request("post", "invoices/reporting/single", {
             uuid,
             invoiceHash,
@@ -66,7 +66,7 @@ export class ZatcaClient {
         });
     }
 
-    async clearInvoice(uuid: string, invoiceHash: string, invoice: any, cleared: boolean) {
+    async clearInvoice(uuid: string, invoiceHash: string, invoice: any, cleared: boolean=true) {
         return this.request("post", "invoices/clearance/single", {
             uuid,
             invoiceHash,
