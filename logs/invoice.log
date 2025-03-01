@@ -1,54 +1,6 @@
-[33m2/27/2025, 8:50:36 AM[0m: [[36mmethod: post  info[0m] Request to compliance was successful  
-[33m2/27/2025, 8:52:33 AM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to compliance was successful  
-[33m2/27/2025, 9:05:42 AM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to compliance was successful  
-[33m2/27/2025, 10:27:46 AM[0m: [[36mmethod: post[0m] [[31minfo[0m] Sending CSR and OTP to compliance. 
-            CSR Length: 1064, OTP Length: 6
-[33m2/27/2025, 10:27:46 AM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to compliance was successful  
-[33m2/27/2025, 10:28:28 AM[0m: [[36mmethod: post[0m] [[31minfo[0m] Sending CSR and OTP to compliance. 
-            CSR Length: 1064, OTP Length: 6
-[33m2/27/2025, 10:28:29 AM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to compliance was successful  
-[33m2/27/2025, 10:48:14 AM[0m: [[36mmethod: post[0m] [[31minfo[0m] Sending CSR and OTP to compliance. 
-            CSR Length: 1064, OTP Length: 6
-[33m2/27/2025, 10:48:14 AM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to compliance was successful  
-[33m2/27/2025, 10:48:14 AM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to production/csids was successful  
-[33m2/27/2025, 10:58:21 AM[0m: [[36mmethod: post[0m] [[31minfo[0m] Sending CSR and OTP to compliance. 
-            CSR Length: 1064, OTP Length: 6
-[33m2/27/2025, 11:38:28 AM[0m: [[36mmethod: post[0m] [[31minfo[0m] Sending CSR and OTP to compliance. 
-            CSR Length: 1064, OTP Length: 6
-[33m2/27/2025, 11:38:28 AM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to compliance was successful  
-[33m2/27/2025, 11:38:28 AM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to production/csids was successful  
-[33m2/27/2025, 1:24:45 PM[0m: [[36mmethod: post[0m] [[31minfo[0m] Sending CSR and OTP to compliance. 
-            CSR Length: 1064, OTP Length: 6
-[33m2/27/2025, 1:24:45 PM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to compliance was successful  
-[33m2/27/2025, 1:24:45 PM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to production/csids was successful  
-[33m2/27/2025, 1:30:05 PM[0m: [[36mmethod: post[0m] [[31minfo[0m] Sending CSR and OTP to compliance. 
-            CSR Length: 1064, OTP Length: 6
-[33m2/27/2025, 1:30:05 PM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to compliance was successful  
-[33m2/27/2025, 1:30:05 PM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to production/csids was successful  
-[33m2/27/2025, 1:30:17 PM[0m: [[36mmethod: post[0m] [[31minfo[0m] Sending CSR and OTP to compliance. 
-            CSR Length: 1064, OTP Length: 6
-[33m2/27/2025, 1:30:17 PM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to compliance was successful  
-[33m2/27/2025, 1:30:17 PM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to production/csids was successful  
-[33m2/27/2025, 1:31:07 PM[0m: [[36mmethod: post[0m] [[31minfo[0m] Sending CSR and OTP to compliance. 
-            CSR Length: 1064, OTP Length: 6
-[33m2/27/2025, 1:31:08 PM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to compliance was successful  
-[33m2/27/2025, 1:31:08 PM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to production/csids was successful  
-[33m2/27/2025, 1:32:16 PM[0m: [[36mmethod: post[0m] [[31minfo[0m] Sending CSR and OTP to compliance. 
-            CSR Length: 1064, OTP Length: 6
-[33m2/27/2025, 1:32:17 PM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to compliance was successful  
-[33m2/27/2025, 1:32:17 PM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to production/csids was successful  
-[33m2/27/2025, 1:32:26 PM[0m: [[36mmethod: post[0m] [[31minfo[0m] Sending CSR and OTP to compliance. 
-            CSR Length: 1064, OTP Length: 6
-[33m2/27/2025, 1:32:26 PM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to compliance was successful  
-[33m2/27/2025, 1:32:27 PM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to production/csids was successful  
-[33m2/27/2025, 1:34:42 PM[0m: [[36mmethod: post[0m] [[31minfo[0m] Sending CSR and OTP to compliance. 
-            CSR Length: 1064, OTP Length: 6
-[33m2/27/2025, 1:34:42 PM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to compliance was successful  
-[33m2/27/2025, 1:34:42 PM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to production/csids was successful  
-[33m3/1/2025, 9:49:39 AM[0m: [[36mmethod: post[0m] [[31minfo[0m] Sending CSR and OTP to compliance. 
-            CSR Length: 1064, OTP Length: 6
-[33m3/1/2025, 9:49:39 AM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to compliance was successful  
-[33m3/1/2025, 9:49:39 AM[0m: [[36mmethod: post [0m] [[31minfo[0m] Request to production/csids was successful  
-[3/1/2025, 9:50:37 AM] [method: post] [info] Sending CSR and OTP to compliance. 
-            CSR Length: 1064, OTP Length: 6[3/1/2025, 9:50:37 AM] [method: post ] [info] Request to compliance was successful  [3/1/2025, 9:50:37 AM] [method: post ] [info] Request to production/csids was successful  [3/1/2025, 9:53:00 AM] [method: post] [info] Sending CSR and OTP to compliance. 
-            CSR Length: 1064, OTP Length: 6[3/1/2025, 9:53:01 AM] [method: post ] [info] Request to compliance was successful  [3/1/2025, 9:53:01 AM] [method: post ] [info] Request to production/csids was successful  
+[3/1/2025, 10:25:40 AM] [method: post ] [info] Sending CSR and OTP to compliance.CSR Length: 1064, OTP Length: 6 
+[3/1/2025, 10:25:40 AM] [method: post ] [info] Request to compliance was successful   
+[3/1/2025, 10:25:40 AM] [method: post ] [info] Request to production/csids was successful   
+[3/1/2025, 3:15:02 PM] [info] [Onboarding] 🔵 Step 1: Generating CSR... 
+[3/1/2025, 3:15:02 PM] [info] [Onboarding] 🟢 Step 2: Sending onboarding request... 
+[3/1/2025, 3:15:02 PM] [method: post ] [info] Sending CSR and OTP to compliance. CSR Length: 712, OTP Length: 6 

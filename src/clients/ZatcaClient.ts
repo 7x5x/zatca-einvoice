@@ -77,8 +77,12 @@ export class ZatcaClient {
     }
 
     async issueCSID(csr: string, otp: string) {
-        logger("info", "method: post", `Sending CSR and OTP to compliance. 
-            CSR Length: ${csr.length}, OTP Length: ${otp.length}`);
+
+        logger(
+            "info",
+            `method: post `,
+            `Sending CSR and OTP to compliance. CSR Length: ${csr.length}, OTP Length: ${otp.length}`
+        );
 
         return this.request("post", "compliance", { csr }, { OTP: otp }, false);
     }

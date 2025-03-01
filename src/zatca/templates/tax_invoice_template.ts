@@ -279,11 +279,11 @@ export default function populate(props: ZATCAInvoiceProps): string {
 
   populated_template = populated_template.replace(
     "SET_VAT_NUMBER",
-    props.egs_info.VAT_number
+    props.egs_info.organizationIdentifier
   );
   populated_template = populated_template.replace(
     "SET_VAT_NAME",
-    props.egs_info.VAT_name
+    props.egs_info.organizationName
   );
 
   populated_template = populated_template.replace(

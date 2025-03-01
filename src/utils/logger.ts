@@ -16,7 +16,7 @@ export const logger = (type: string, source: string, message: string, sessionId?
 
     const timestamp = new Date().toLocaleString();
     // const logMessage = `\x1b[33m${timestamp}\x1b[0m: [\x1b[36m${source}\x1b[0m] [\x1b[31m${type}\x1b[0m] ${message}\n`;
-    const logMessage = `[${timestamp}] [${source}] [${type}] ${message}`;
+    const logMessage = `[${timestamp}] [${source}] [${type}] ${message} \n`;
 
     if (!activeSessions.has(currentSessionId)) {
         activeSessions.set(currentSessionId, []);

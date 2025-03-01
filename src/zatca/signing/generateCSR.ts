@@ -1,6 +1,7 @@
 import * as crypto from 'crypto';
 import * as fs from 'fs';
 import { execSync } from 'child_process';
+import { EGSUnitInfo, EGSUnitLocation } from '../../types/EGSUnitInfo.interface';
 
 export enum IInvoiceType {
     Simplified = '0100',
@@ -13,34 +14,22 @@ export enum ZatcaEnvironmentMode {
     sandbox = 'TSTZATCA-Code-Signing'
 }
 
- 
 
-interface CSRGenerateOptions {
-    commonName: string;
-    organizationIdentifier: string;
-    organizationName: string;
-    organizationUnit: string;
-    country: string;
-    invoiceType: IInvoiceType;
-    address: string;
-    businessCategory: string;
-    egsSolutionName: string;
-    egsModel: string;
-    egsSerialNumber: string;
-}
+
+
 
 class ZATCASigningCSR {
+    private csrOptions: EGSUnitInfo;
     private key: crypto.KeyObject | null = null;
-    private csrOptions: CSRGenerateOptions;
-    private mode: ZatcaEnvironmentMode;
+    private mode: ZatcaEnvironmentMode; // Default to production
     private privateKeyPath?: string;
     private privateKeyPassword?: string;
     private generatedPrivateKeyPath?: string;
     private csrConfigPath?: string;
 
     constructor(
-        csrOptions: CSRGenerateOptions,
-        mode: ZatcaEnvironmentMode,
+        csrOptions: EGSUnitInfo,
+        mode: ZatcaEnvironmentMode = ZatcaEnvironmentMode.production, // Make `mode` optional
         privateKeyPath?: string,
         privateKeyPassword?: string
     ) {
@@ -51,16 +40,17 @@ class ZATCASigningCSR {
     }
 
     // Generate CSR and return the output
-    public generate(): string {
+    public generate() {
         this.setKey();
+        const privateKey: string = "";
         this.writeCsrConfig();
 
         const command = this.generateOpenSslCsrCommand();
 
         try {
-            const output = execSync(command).toString();
+            const csr = execSync(command).toString();
             this.cleanupLeftoverFiles();
-            return output;
+            return { privateKey, csr };
         } catch (error) {
             if (error instanceof Error) {
                 throw new Error(`Error executing OpenSSL command: ${error.message}`);
@@ -70,10 +60,10 @@ class ZATCASigningCSR {
         }
     }
 
-    static generateCSR(csrOptions: CSRGenerateOptions, mode: ZatcaEnvironmentMode): string {
+    static generateCSR(csrOptions: EGSUnitInfo, mode: ZatcaEnvironmentMode) {
         return new ZATCASigningCSR(csrOptions, mode).generate();
     }
-    private defaultCsrOptions(): CSRGenerateOptions {
+    private defaultCsrOptions(): EGSUnitInfo {
         return {
             commonName: '',
             organizationIdentifier: '',
@@ -81,7 +71,7 @@ class ZATCASigningCSR {
             organizationUnit: '',
             country: 'SA',
             invoiceType: IInvoiceType.Mixed,
-            address: '',
+            location: {} as EGSUnitLocation,
             businessCategory: '',
             egsSolutionName: '',
             egsModel: '',
@@ -167,7 +157,7 @@ class ZATCASigningCSR {
       SN = ${this.egsSerialNumber()}
       UID = ${this.csrOptions.organizationIdentifier}
       title = ${this.csrOptions.invoiceType}
-      registeredAddress = ${this.csrOptions.address}
+      registeredAddress = ${this.csrOptions.location.building} ${this.csrOptions.location.street} ${this.csrOptions.location.city}
       businessCategory = ${this.csrOptions.businessCategory}
 
       [my_req_dn_prompt]
@@ -179,5 +169,5 @@ class ZATCASigningCSR {
     }
 }
 
-export { ZATCASigningCSR, CSRGenerateOptions };
+export { ZATCASigningCSR, EGSUnitInfo as CSRGenerateOptions };
 

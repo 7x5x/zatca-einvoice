@@ -1,3 +1,5 @@
+import { IInvoiceType } from "../zatca/signing/generateCSR";
+
 export interface EGSUnitLocation {
     city: string;
     city_subdivision: string;
@@ -7,21 +9,20 @@ export interface EGSUnitLocation {
     postal_zone: number;
 }
 
-export interface EGSUnitInfo {
-    uuid: string;
-    custom_id: string;
-    model: string;
-    CRN_number: string;
-    VAT_name: string;
-    VAT_number: string;
-    branch_name: string;
-    branch_industry: string;
-    location: EGSUnitLocation;
-    private_key?: string;
-    csr?: string;
-    compliance_certificate?: string;
-    compliance_api_secret?: string;
-    production_certificate?: string;
-    production_api_secret?: string;
-}
 
+
+export interface EGSUnitInfo {
+    uuid?: string;
+    commonName: string;//taxpayer_provided_id | custom_id
+    organizationIdentifier: string;//VAT_number
+    organizationName: string;//taxpayer_name |VAT_name  
+    organizationUnit: string;//branch_name
+    country: string;
+    invoiceType: IInvoiceType;
+    CRN_number?: string;
+    location: EGSUnitLocation;
+    businessCategory: string;//branch_industry
+    egsSolutionName: string;
+    egsModel: string;//egs_model
+    egsSerialNumber: string;
+}
