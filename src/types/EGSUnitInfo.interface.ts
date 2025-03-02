@@ -9,8 +9,6 @@ export interface EGSUnitLocation {
     postal_zone: number;
 }
 
-
-
 export interface EGSUnitInfo {
     uuid?: string;
     commonName: string;//taxpayer_provided_id | custom_id

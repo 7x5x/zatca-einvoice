@@ -2,12 +2,9 @@ import axios, { AxiosInstance } from "axios";
 import { handleError } from "../utils/handleError";
 import { logger } from "../utils/logger";
 import { TAuth } from "../types/TAuth";
+import { ZatcaEnvironmentUrl } from "../types/EZatcaEnvironment";
 
-export enum ZatcaEnvironmentUrl {
-    Production = "https://gw-fatoora.zatca.gov.sa/e-invoicing/core",
-    Sandbox = "https://gw-apic-gov.gazt.gov.sa/e-invoicing/developer-portal",
-    Simulation = "https://gw-fatoora.zatca.gov.sa/e-invoicing/simulation",
-}
+
 
 export class ZatcaClient {
     private api: AxiosInstance;
@@ -54,6 +51,9 @@ export class ZatcaClient {
             },
         });
     }
+    getEnvironment() {
+        return this.environment;
+    }
 
 
     async reportInvoice(uuid: string, invoiceHash: string, invoice: any, cleared: boolean = true) {
@@ -77,10 +77,7 @@ export class ZatcaClient {
     }
 
     async issueCSID(csr: string, otp: string) {
-
-        logger(
-            "info",
-            `method: post `,
+        logger(`Onboarding`, "info",
             `Sending CSR and OTP to compliance. CSR Length: ${csr.length}, OTP Length: ${otp.length}`
         );
 
@@ -106,15 +103,10 @@ export class ZatcaClient {
     private async request(method: "get" | "post" | "patch", path: string, data: any = {}, headers: any = {}, auth: boolean = true) {
         try {
             const response = await this.api.request({ method, url: path, data, headers });
-            logger(
-                "info",
-                `method: ${method} `,
-                `Request to ${path} was successful  `
-            );
-            console.log(response.data);
+            logger("Request to ZATCA API", "info", `Request to ${path} was successful `);
             return response.data;
         } catch (error) {
-            handleError(error);
+            handleError(error, "Request to ZATCA API failed");
             throw error;
         }
     }

@@ -13,9 +13,9 @@ export function saveInvoice(text: string, xmlFile:any) {
 
   fs.writeFile(filePath, invoice, (err) => {
     if (err) {
-      console.error(err);
+      // console.error(err);
     } else {
-      console.log("Successfully wrote data to file!");
+      // console.log("Successfully wrote data to file!");
     }
   });
 }

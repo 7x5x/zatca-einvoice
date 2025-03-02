@@ -1,6 +1,122 @@
-[3/1/2025, 10:25:40 AM] [method: post ] [info] Sending CSR and OTP to compliance.CSR Length: 1064, OTP Length: 6 
-[3/1/2025, 10:25:40 AM] [method: post ] [info] Request to compliance was successful   
-[3/1/2025, 10:25:40 AM] [method: post ] [info] Request to production/csids was successful   
-[3/1/2025, 3:15:02 PM] [info] [Onboarding] 🔵 Step 1: Generating CSR... 
-[3/1/2025, 3:15:02 PM] [info] [Onboarding] 🟢 Step 2: Sending onboarding request... 
-[3/1/2025, 3:15:02 PM] [method: post ] [info] Sending CSR and OTP to compliance. CSR Length: 712, OTP Length: 6 
+[3/2/2025, 2:28:05 PM] [info] [setKey] Generating new key. 
+[3/2/2025, 2:28:05 PM] [info] [writeCsrConfig] Path:./f9ed4f44-c7af-4ebc-9cc2-9c5c49a1a222.conf 
+[3/2/2025, 2:28:05 PM] [method: post ] [info] Request to compliance was successful  
+[3/2/2025, 2:28:05 PM] [info] [Onboarding] 🟡 Step 3: Signing and Sending Test Invoice... 
+[3/2/2025, 2:28:05 PM] [info] [Onboarding] 🔵 Step 4: Requesting Production CSID... 
+[3/2/2025, 2:28:05 PM] [method: post ] [info] Request to production/csids was successful  
+[3/2/2025, 2:34:58 PM] [info] [setKey] Generating new key. 
+[3/2/2025, 2:34:58 PM] [info] [writeCsrConfig] Path:./c1ea0c2c-79ff-45e8-b431-eb80d426dcd7.conf 
+[3/2/2025, 2:35:00 PM] [method: post ] [info] Request to compliance was successful  
+[3/2/2025, 2:35:00 PM] [info] [Onboarding] 🟡 Step 3: Signing and Sending Test Invoice... 
+[3/2/2025, 2:35:00 PM] [info] [Onboarding] 🔵 Step 4: Requesting Production CSID... 
+[3/2/2025, 2:35:00 PM] [method: post ] [info] Request to production/csids was successful  
+[3/2/2025, 2:35:10 PM] [info] [setKey] Generating new key. 
+[3/2/2025, 2:35:10 PM] [info] [writeCsrConfig] Path:./e12e5917-8a91-4ade-a1d8-d30939de25dc.conf 
+[3/2/2025, 2:35:10 PM] [method: post ] [info] Request to compliance was successful  
+[3/2/2025, 2:35:10 PM] [info] [Onboarding] 🟡 Step 3: Signing and Sending Test Invoice... 
+[3/2/2025, 2:35:10 PM] [info] [Onboarding] 🔵 Step 4: Requesting Production CSID... 
+[3/2/2025, 2:35:11 PM] [method: post ] [info] Request to production/csids was successful  
+[3/2/2025, 2:36:09 PM] [info] [setKey] Generating new key. 
+[3/2/2025, 2:36:09 PM] [info] [writeCsrConfig] Path:./3dddfebf-94fd-482d-8756-f314a3f81a61.conf 
+[3/2/2025, 2:36:10 PM] [method: post ] [info] Request to compliance was successful  
+[3/2/2025, 2:36:10 PM] [info] [Onboarding] 🟡 Step 3: Signing and Sending Test Invoice... 
+[3/2/2025, 2:36:10 PM] [info] [Onboarding] 🔵 Step 4: Requesting Production CSID... 
+[3/2/2025, 2:36:10 PM] [method: post ] [info] Request to production/csids was successful  
+[3/2/2025, 2:36:30 PM] [info] [setKey] Generating new key. 
+[3/2/2025, 2:36:30 PM] [info] [writeCsrConfig] Path:./d0c1d3f9-8f96-4254-b2e9-9c52e7d22788.conf 
+[3/2/2025, 2:36:30 PM] [method: post ] [info] Request to compliance was successful  
+[3/2/2025, 2:36:30 PM] [info] [Onboarding] 🟡 Step 3: Signing and Sending Test Invoice... 
+[3/2/2025, 2:36:30 PM] [info] [Onboarding] 🔵 Step 4: Requesting Production CSID... 
+[3/2/2025, 2:36:30 PM] [method: post ] [info] Request to production/csids was successful  
+[3/2/2025, 2:37:43 PM] [info] [setKey] Generating new key. 
+[3/2/2025, 2:37:43 PM] [info] [writeCsrConfig] Path:./74cb88a6-c5ad-47f7-aee9-28fd8fe65d90.conf 
+[3/2/2025, 2:37:43 PM] [method: post ] [info] Request to compliance was successful  
+[3/2/2025, 2:37:43 PM] [info] [Onboarding] 🟡 Step 3: Signing and Sending Test Invoice... 
+[3/2/2025, 2:37:43 PM] [info] [Onboarding] 🔵 Step 4: Requesting Production CSID... 
+[3/2/2025, 2:37:43 PM] [method: post ] [info] Request to production/csids was successful  
+[3/2/2025, 2:38:23 PM] [info] [setKey] Generating new key. 
+[3/2/2025, 2:38:23 PM] [info] [writeCsrConfig] Path:./10ff46d1-d79e-4d55-9fa8-4950b041ea58.conf 
+[3/2/2025, 2:38:23 PM] [method: post ] [info] Request to compliance was successful  
+[3/2/2025, 2:38:23 PM] [info] [Onboarding] 🔵 Step 4: Requesting Production CSID... 
+[3/2/2025, 2:38:23 PM] [info] [Onboarding] 🟡 Step 3: Signing and Sending Test Invoice... 
+[3/2/2025, 2:38:23 PM] [method: post ] [info] Request to production/csids was successful  
+[3/2/2025, 2:38:40 PM] [info] [setKey] Generating new key. 
+[3/2/2025, 2:38:40 PM] [info] [writeCsrConfig] Path:./fc918273-956a-42fa-991b-58f1fea34b34.conf 
+[3/2/2025, 2:38:40 PM] [method: post ] [info] Request to compliance was successful  
+[3/2/2025, 2:38:40 PM] [info] [Onboarding] 🟡 Step 3: Signing and Sending Test Invoice... 
+[3/2/2025, 2:38:40 PM] [info] [Onboarding] 🔵 Step 4: Requesting Production CSID... 
+[3/2/2025, 2:38:40 PM] [method: post ] [info] Request to production/csids was successful  
+
+[3/2/2025, 2:39:53 PM] [info] [setKey] Generating new key. 
+[3/2/2025, 2:39:53 PM] [info] [writeCsrConfig] Path:./2991efcf-103d-4f1c-84a3-f8d15a8e24ff.conf 
+[3/2/2025, 2:39:53 PM] [method: post ] [info] Request to compliance was successful  
+[3/2/2025, 2:39:53 PM] [info] [Onboarding] 🟡 Step 3: Signing and Sending Test Invoice... 
+[3/2/2025, 2:39:53 PM] [info] [Onboarding] 🔵 Step 4: Requesting Production CSID... 
+[3/2/2025, 2:39:53 PM] [method: post ] [info] Request to production/csids was successful  
+
+
+[3/2/2025, 2:43:04 PM] [info] [setKey] Generating new key. 
+[3/2/2025, 2:43:04 PM] [info] [writeCsrConfig] Path:./fb3fcedc-4822-4336-8a09-9493be89c39c.conf 
+[3/2/2025, 2:43:05 PM] [] [info] method: post  
+[3/2/2025, 2:43:05 PM] [info] [Onboarding] 🟡 Step 3: Signing and Sending Test Invoice... 
+[3/2/2025, 2:43:05 PM] [info] [Onboarding] 🔵 Step 4: Requesting Production CSID... 
+[3/2/2025, 2:43:05 PM] [] [info] method: post  
+
+[3/2/2025, 2:44:37 PM] [info] [setKey] Generating new key. 
+[3/2/2025, 2:44:37 PM] [info] [writeCsrConfig] Path:./fe6b9216-2fdd-443b-a51e-a156fd60d112.conf 
+[3/2/2025, 2:44:37 PM] [info] [Request to ZATCA API] Request to compliance was successful  
+[3/2/2025, 2:44:37 PM] [info] [Onboarding] 🟡 Step 3: Signing and Sending Test Invoice... 
+[3/2/2025, 2:44:37 PM] [info] [Onboarding] 🔵 Step 4: Requesting Production CSID... 
+[3/2/2025, 2:44:37 PM] [info] [Request to ZATCA API] Request to production/csids was successful  
+
+[3/2/2025, 2:47:32 PM] [info] [setKey] Generating new key. 
+[3/2/2025, 2:47:32 PM] [info] [writeCsrConfig] Path:./93136e72-5655-4ea8-a790-7ace0a6a78fd.conf 
+[3/2/2025, 2:47:32 PM] [info] [Request to ZATCA API] Request to compliance was successful  
+[3/2/2025, 2:47:32 PM] [info] [Onboarding] 🟡 Step 3: Signing and Sending Test Invoice... 
+[3/2/2025, 2:47:32 PM] [info] [Onboarding] 🔵 Step 4: Requesting Production CSID... 
+[3/2/2025, 2:47:32 PM] [info] [Request to ZATCA API] Request to production/csids was successful  
+[3/2/2025, 3:02:01 PM] [info] [setKey] Generating new key. 
+[3/2/2025, 3:02:01 PM] [info] [generate csr] generateCsrConfig generated successfully. 
+[3/2/2025, 3:02:01 PM] [info] [generate csr] CSR generated successfully. 
+[3/2/2025, 3:02:01 PM] [info] [Onboarding] Sending CSR and OTP to compliance. CSR Length: 1064, OTP Length: 6 
+[3/2/2025, 3:02:02 PM] [info] [Request to ZATCA API] Request to compliance was successful  
+[3/2/2025, 3:02:02 PM] [info] [Onboarding] Step 3: Signing and Sending Test Invoice... 
+[3/2/2025, 3:02:02 PM] [info] [Onboarding] 🔵 Step 4: Requesting Production CSID... 
+[3/2/2025, 3:02:02 PM] [info] [Request to ZATCA API] Request to production/csids was successful 
+
+
+[3/2/2025, 3:03:33 PM] [info] [setKey] Generating new key. 
+[3/2/2025, 3:03:34 PM] [info] [generate csr] generateCsrConfig generated successfully. 
+[3/2/2025, 3:03:34 PM] [info] [generate csr] CSR generated successfully. 
+[3/2/2025, 3:03:34 PM] [info] [Onboarding] Sending CSR and OTP to compliance. CSR Length: 1064, OTP Length: 6 
+[3/2/2025, 3:03:34 PM] [info] [Request to ZATCA API] Request to compliance was successful  
+[3/2/2025, 3:03:34 PM] [info] [Onboarding] Step 3: Signing and Sending Test Invoice... 
+[3/2/2025, 3:03:34 PM] [info] [Onboarding] 🔵 Step 4: Requesting Production CSID... 
+[3/2/2025, 3:03:34 PM] [info] [Request to ZATCA API] Request to production/csids was successful  
+
+[3/2/2025, 3:05:21 PM] [info] [setKey] Generating new key. 
+[3/2/2025, 3:05:21 PM] [info] [generate csr] generateCsrConfig generated successfully. 
+[3/2/2025, 3:05:22 PM] [info] [generate csr] CSR generated successfully. 
+[3/2/2025, 3:05:22 PM] [info] [Onboarding] Sending CSR and OTP to compliance. CSR Length: 1064, OTP Length: 6 
+[3/2/2025, 3:07:46 PM] [info] [setKey] Generating new key. 
+[3/2/2025, 3:07:46 PM] [info] [generate csr] generateCsrConfig generated successfully. 
+[3/2/2025, 3:07:46 PM] [info] [generate csr] CSR generated successfully. 
+[3/2/2025, 3:07:46 PM] [info] [Onboarding] Sending CSR and OTP to compliance. CSR Length: 1064, OTP Length: 6 
+[3/2/2025, 3:07:46 PM] [info] [Request to ZATCA API] Request to compliance was successful  
+[3/2/2025, 3:07:46 PM] [Signer] [Info] Invoice hash:  47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU= 
+[3/2/2025, 3:07:46 PM] [Signer] [Info] Invoice hash:  47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU= 
+[3/2/2025, 3:07:46 PM] [Signer] [Info] Invoice hash:  47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU= 
+[3/2/2025, 3:07:46 PM] [info] [Onboarding] 🔵 Step 4: Requesting Production CSID... 
+[3/2/2025, 3:07:46 PM] [info] [Onboarding] Step 3: Signing and Sending Test Invoice... 
+[3/2/2025, 3:07:46 PM] [info] [Request to ZATCA API] Request to production/csids was successful  
+[3/2/2025, 3:08:14 PM] [info] [setKey] Generating new key. 
+[3/2/2025, 3:08:14 PM] [info] [generate csr] generateCsrConfig generated successfully. 
+[3/2/2025, 3:08:14 PM] [info] [Onboarding] Sending CSR and OTP to compliance. CSR Length: 1064, OTP Length: 6 
+[3/2/2025, 3:08:14 PM] [info] [generate csr] CSR generated successfully. 
+[3/2/2025, 3:08:14 PM] [info] [Request to ZATCA API] Request to compliance was successful  
+[3/2/2025, 3:08:14 PM] [Signer] [Info] Invoice hash:  47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU= 
+[3/2/2025, 3:08:14 PM] [Signer] [Info] Invoice hash:  47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU= 
+[3/2/2025, 3:08:14 PM] [info] [Onboarding] Step 3: Signing and Sending Test Invoice... 
+[3/2/2025, 3:08:14 PM] [Signer] [Info] Invoice hash:  47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU= 
+[3/2/2025, 3:08:14 PM] [info] [Onboarding] 🔵 Step 4: Requesting Production CSID... 
+[3/2/2025, 3:08:14 PM] [info] [Request to ZATCA API] Request to production/csids was successful  

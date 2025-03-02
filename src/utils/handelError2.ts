@@ -1,7 +1,7 @@
 import { logError, throwErrorObject } from "./errorType";
 import { saveInvoice } from "./removeChars";
 
- 
+
 
 interface ErrorResponse {
     status: number;
@@ -17,7 +17,6 @@ export const handleInvoiceError = (
     saveInvoice("error.xml", base64Invoice);
     let status, data;
 
-    console.log(error.status);
 
     error.status == 202
         ? ({ status, data } = error as ErrorResponse)

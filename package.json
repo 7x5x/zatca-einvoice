@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node dist/src/index.js",
     "build": "tsc",
+    "rebuild": "rmdir /s /q dist && tsc",
+    "dev": "npm run rebuild && npm run start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ali Al-Gabal",

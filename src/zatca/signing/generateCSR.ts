@@ -1,17 +1,15 @@
 import * as crypto from 'crypto';
 import * as fs from 'fs';
-import { execSync } from 'child_process';
+import { execSync, spawnSync } from 'child_process';
 import { EGSUnitInfo, EGSUnitLocation } from '../../types/EGSUnitInfo.interface';
+import { logger } from '../../utils/logger';
+import { handleError } from '../../utils/handleError';
+import { ZatcaEnvironmentMode } from '../../types/EZatcaEnvironment';
 
 export enum IInvoiceType {
     Simplified = '0100',
     Standerd = '1000',
     Mixed = '1100'
-}
-export enum ZatcaEnvironmentMode {
-    production = 'ZATCA-Code-Signing',
-    simulation = 'PREZATCA-Code-Signing',
-    sandbox = 'TSTZATCA-Code-Signing'
 }
 
 
@@ -29,7 +27,7 @@ class ZATCASigningCSR {
 
     constructor(
         csrOptions: EGSUnitInfo,
-        mode: ZatcaEnvironmentMode = ZatcaEnvironmentMode.production, // Make `mode` optional
+        mode: ZatcaEnvironmentMode = ZatcaEnvironmentMode.Production, // Make `mode` optional
         privateKeyPath?: string,
         privateKeyPassword?: string
     ) {
@@ -41,22 +39,25 @@ class ZATCASigningCSR {
 
     // Generate CSR and return the output
     public generate() {
-        this.setKey();
-        const privateKey: string = "";
-        this.writeCsrConfig();
 
+        this.setKey();
+        this.writeCsrConfig();
+        const privateKey = this.key.export({ type: 'pkcs8', format: 'pem' }).toString();
         const command = this.generateOpenSslCsrCommand();
 
         try {
-            const csr = execSync(command).toString();
+            const csr = spawnSync('openssl', command, {
+                input: privateKey,
+                encoding: 'utf-8'
+            }).stdout;
+
             this.cleanupLeftoverFiles();
+            logger("generate csr", "info", "CSR generated successfully.");
             return { privateKey, csr };
         } catch (error) {
-            if (error instanceof Error) {
-                throw new Error(`Error executing OpenSSL command: ${error.message}`);
-            } else {
-                throw new Error('Error executing OpenSSL command');
-            }
+            logger("generate", "error", `Error generating CSR: ${error.message}`);
+            handleError(error, "Onboarding");
+            return { privateKey: null, csr: null };
         }
     }
 
@@ -80,12 +81,15 @@ class ZATCASigningCSR {
     }
 
     private setKey(): void {
+
         if (this.privateKeyProvided() && !this.key) {
             this.key = crypto.createPrivateKey({
                 key: fs.readFileSync(this.privateKeyPath as string),
                 passphrase: this.privateKeyPassword
             });
+            logger("setKey", "info", `Private key provided and set.`);
         } else {
+            logger("setKey", "info", "Generating new key.");
             this.generateKey();
         }
     }
@@ -96,12 +100,12 @@ class ZATCASigningCSR {
 
     private generateKey(): void {
         if (!this.privateKeyProvided()) {
-            const tempKey = crypto.generateKeyPairSync('ec', {
+            this.key = crypto.generateKeyPairSync('ec', {
                 namedCurve: 'secp256k1'
             }).privateKey;
-            this.generatedPrivateKeyPath = `./${crypto.randomUUID()}.pem`;
-            this.key = tempKey;
-            fs.writeFileSync(this.generatedPrivateKeyPath, tempKey.export({ type: 'pkcs8', format: 'pem' }));
+            // this.generatedPrivateKeyPath = `./${crypto.randomUUID()}.pem`;
+            // this.key = tempKey;
+            // fs.writeFileSync(this.generatedPrivateKeyPath, tempKey.export({ type: 'pkcs8', format: 'pem' }));
         }
     }
 
@@ -113,12 +117,13 @@ class ZATCASigningCSR {
 
 
 
-    private generateOpenSslCsrCommand(): string {
-        return `openssl req -new -sha256 -key ${this.privateKeyPath || this.generatedPrivateKeyPath} -config ${this.csrConfigPath}`;
+    private generateOpenSslCsrCommand(): string[] {
+        return ['req', '-new', '-sha256', '-key', '/dev/stdin', '-config', this.csrConfigPath as string];
     }
 
     private writeCsrConfig(): void {
         this.csrConfigPath = `./${crypto.randomUUID()}.conf`;
+        logger("generate csr", "info", "generateCsrConfig generated successfully.");
         fs.writeFileSync(this.csrConfigPath, this.generateCsrConfig());
     }
 
@@ -170,4 +175,5 @@ class ZATCASigningCSR {
 }
 
 export { ZATCASigningCSR, EGSUnitInfo as CSRGenerateOptions };
+
 

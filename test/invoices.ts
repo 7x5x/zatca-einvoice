@@ -1,6 +1,5 @@
 import moment from "moment";
-import { DocumentCurrencyCode } from "../src/types/currencyCodes.enum";
-import { ZATCAPaymentMethods } from "../src/types/paymentMethods.enum";
+import { DocumentCurrencyCode, ZATCAPaymentMethods } from "../src/types/currencyCodes.enum"; 
 import { ZatcaCustomerInfo } from "../src/types/customer.interface";
 import { ZATCATaxInvoice } from "../src/zatca/templates/ZATCATaxInvoice";
 
