@@ -457,6 +457,7 @@ export class ZATCATaxInvoice {
    * Signs the invoice.*/
 
   sign(certificate_string: string, private_key_string: string) {
+    
     return generateSignedXMLString({
       invoice_xml: this.invoice_xml,
       certificate_string: certificate_string,

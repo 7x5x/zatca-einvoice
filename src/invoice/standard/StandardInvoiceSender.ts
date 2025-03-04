@@ -1,13 +1,15 @@
 // src/invoice/standard/StandardInvoiceSender.ts
-import { ZATCATaxInvoice } from '../../zatca/templates/ZATCATaxInvoice';
+import { ZATCAInvoiceProps, ZATCATaxInvoice } from '../../zatca/templates/ZATCATaxInvoice';
 import { BaseInvoiceSender } from '../BaseInvoiceSender';
 
 export class StandardInvoiceSender extends BaseInvoiceSender {
-    async send(uuid: string, invoiceHash: string, invoice: ZATCATaxInvoice): Promise<any> {//type SignedInvoice
+    async send(invoice: ZATCAInvoiceProps): Promise<any> {//type SignedInvoice
         // Convert invoice to XML
         // Use your private key; in a real-world scenario, inject this or retrieve securely
-        const signedXml = this.signInvoice(invoice);
-        const cleardInvoice = {};
+        const { signedInvoiceString, invoiceHash, qr } = this.signInvoice(invoice);
+        const cleardInvoice = await this.zatcaClient.clearInvoice(invoice.egs_info.uuid, invoiceHash, signedInvoiceString);
+
+
         // Call the standard invoice API endpoint using csid and signedXml
         // For example, using fetch or an HTTP client...
         return cleardInvoice;

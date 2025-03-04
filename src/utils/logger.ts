@@ -1,10 +1,9 @@
 import fs from "fs";
 import dotenv from "dotenv";
 dotenv.config();
-const LOGGING = process.env.LOGGING === "1";
+const LOGGING = process.env.LOGGING === "0";
 // const LOG_FILE = "../../logs/invoice.log";
 const LOG_FILE = "logs/invoice.log";
-import { v4 as uuidv4 } from 'uuid';
 
 const MAX_LOG_SIZE = 10 * 1024 * 1024; // 10 MB
 
@@ -12,7 +11,7 @@ export const activeSessions = new Map<string, string[]>();
 export const logger = (type: string, source: string, message: string, sessionId?: string) => {
     if (!LOGGING) return;
 
-    const currentSessionId = sessionId || uuidv4();
+    const currentSessionId = sessionId || crypto.randomUUID();
 
     const timestamp = new Date().toLocaleString();
     // const logMessage = `\x1b[33m${timestamp}\x1b[0m: [\x1b[36m${source}\x1b[0m] [\x1b[31m${type}\x1b[0m] ${message}\n`;

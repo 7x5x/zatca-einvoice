@@ -8,7 +8,7 @@ import { ZatcaEnvironmentMode } from '../../types/EZatcaEnvironment';
 
 export enum IInvoiceType {
     Simplified = '0100',
-    Standerd = '1000',
+    Standard = '1000',
     Mixed = '1100'
 }
 

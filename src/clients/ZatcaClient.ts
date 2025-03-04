@@ -3,6 +3,7 @@ import { handleError } from "../utils/handleError";
 import { logger } from "../utils/logger";
 import { TAuth } from "../types/TAuth";
 import { ZatcaEnvironmentUrl } from "../types/EZatcaEnvironment";
+import { cleanUpCertificateString } from "../zatca/signing";
 
 
 
@@ -16,10 +17,10 @@ export class ZatcaClient {
 
     constructor(
         environment: ZatcaEnvironmentUrl = ZatcaEnvironmentUrl.Production,
+        username?: string,
+        password?: string,
         language: "ar" | "en" = "en",
         version: string = "V2",
-        username?: string,
-        password?: string
     ) {
         this.environment = environment;
         this.username = username;
@@ -41,9 +42,10 @@ export class ZatcaClient {
     setAuth(auth: TAuth) {
         this.username = auth.username;
         this.password = auth.password;
+        const authHeaders = this.getAuthHeaders(auth.username, auth.password);
         this.api = axios.create({
             baseURL: this.environment,
-            auth: auth,
+            auth: { ...authHeaders },
             headers: {
                 "Accept-Language": this.language,
                 "Content-Type": "application/json",
@@ -51,6 +53,33 @@ export class ZatcaClient {
             },
         });
     }
+
+    private getAuthHeaders = (certificate?: string, secret?: string): any => {
+        if (certificate && secret) {
+            const certificate_stripped = cleanUpCertificateString(certificate);
+            const basic = Buffer.from(
+                `${Buffer.from(certificate_stripped).toString("base64")}:${secret}`
+            ).toString("base64");
+            return {
+                Authorization: `Basic ${basic}`,
+            };
+        }
+        return {};
+    };
+
+    // setAuth(auth: TAuth) {
+    //     this.username = auth.username;
+    //     this.password = auth.password;
+    //     this.api = axios.create({
+    //         baseURL: this.environment,
+    //         auth: auth,
+    //         headers: {
+    //             "Accept-Language": this.language,
+    //             "Content-Type": "application/json",
+    //             "Accept-Version": this.version,
+    //         },
+    //     });
+    // }
     getEnvironment() {
         return this.environment;
     }

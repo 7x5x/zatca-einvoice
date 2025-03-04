@@ -7,8 +7,8 @@ import { standardInvoices } from "../seed/testStandard";
 import { EGSUnitInfo } from "../types/EGSUnitInfo.interface";
 import { logger } from "../utils/logger";
 import { ZatcaEnvironmentMap } from "../types/EZatcaEnvironment";
-import { conforms } from "lodash";
-import { saveInvoice } from "../utils/removeChars";
+import { ZATCAInvoiceProps, ZATCATaxInvoice } from "../zatca/templates/ZATCATaxInvoice";
+
 const csr2 = 'LS0tLS1CRUdJTiBDRVJUSUZJQ0FURSBSRVFVRVNULS0tLS0KTUlJQ0ZUQ0NBYndDQVFBd2RURUxNQWtHQTFVRUJoTUNVMEV4RmpBVUJnTlZCQXNNRFZKcGVXRmthQ0JDY21GdQpZMmd4SmpBa0JnTlZCQW9NSFUxaGVHbHRkVzBnVTNCbFpXUWdWR1ZqYUNCVGRYQndiSGtnVEZSRU1TWXdKQVlEClZRUUREQjFVVTFRdE9EZzJORE14TVRRMUxUTTVPVGs1T1RrNU9Ua3dNREF3TXpCV01CQUdCeXFHU000OUFnRUcKQlN1QkJBQUtBMElBQktGZ2ltdEVtdlJTQkswenI5TGdKQXRWU0NsOFZQWno2Y2RyNVgrTW9USG84dkhOTmx5Vwo1UTZ1N1Q4bmFQSnF0R29UakpqYVBJTUo0dTE3ZFNrL1ZIaWdnZWN3Z2VRR0NTcUdTSWIzRFFFSkRqR0IxakNCCjB6QWhCZ2tyQmdFRUFZSTNGQUlFRkF3U1drRlVRMEV0UTI5a1pTMVRhV2R1YVc1bk1JR3RCZ05WSFJFRWdhVXcKZ2FLa2daOHdnWnd4T3pBNUJnTlZCQVFNTWpFdFZGTlVmREl0VkZOVWZETXRaV1F5TW1ZeFpEZ3RaVFpoTWkweApNVEU0TFRsaU5UZ3RaRGxoT0dZeE1XVTBORFZtTVI4d0hRWUtDWkltaVpQeUxHUUJBUXdQTXprNU9UazVPVGs1Ck9UQXdNREF6TVEwd0N3WURWUVFNREFReE1UQXdNUkV3RHdZRFZRUWFEQWhTVWxKRU1qa3lPVEVhTUJnR0ExVUUKRHd3UlUzVndjR3g1SUdGamRHbDJhWFJwWlhNd0NnWUlLb1pJemowRUF3SURSd0F3UkFJZ1NHVDBxQkJ6TFJHOApJS09melI1L085S0VicHA4bWc3V2VqUlllZkNZN3VRQ0lGWjB0U216MzAybmYvdGo0V2FxbVYwN01qZVVkVnVvClJJckpLYkxtUWZTNwotLS0tLUVORCBDRVJUSUZJQ0FURSBSRVFVRVNULS0tLS0K';
 
 export class EgsOnboardingService implements IEgsOnboardingService {
@@ -32,27 +32,32 @@ export class EgsOnboardingService implements IEgsOnboardingService {
      * @param otp - One Time Password for onboarding.
      * @returns A Promise that resolves to the CSID as a string.
      */
+
     async onboard(otp: string): Promise<string> {
 
-        // Step 1: Generate a private key and CSR.
-        const { privateKey, csr } = this.zatcaSigningCSR.generate();
+        try {
+            // Step 1: Generate a private key and CSR.
+            const { privateKey, csr } = this.zatcaSigningCSR.generate();
 
-        // Step 2: Send the signed CSR along with OTP.
-        // The function sendOnboardingRequest handles the API call.
-
-        const onboardingCSID = await this.zatcaClient.issueCSID(csr2, otp);
-        this.zatcaClient.setAuth({ username: onboardingCSID.binarySecurityToken, password: onboardingCSID.secret });
-
-
-        await this.processInvoices(csr, privateKey);
+            // Step 2: Send the signed CSR along with OTP.
+            // The function sendOnboardingRequest handles the API call.
+            const onboardingCSID = await this.zatcaClient.issueCSID(csr2, otp);
+            this.zatcaClient.setAuth({ username: onboardingCSID.binarySecurityToken, password: onboardingCSID.secret });
 
 
-        // Step 4: Send the onboardingCSID.requestid to get ProductionCSID.
-        logger("Onboarding", "info", "🔵 Step 4: Requesting Production CSID...");
-        const ProductionCSID = await this.zatcaClient.issueProductionCSID(onboardingCSID.requestID);
+            await this.processInvoices(csr, privateKey);
 
-        // Return the onboarding CSID
-        return ProductionCSID;
+
+            // Step 4: Send the onboardingCSID.requestid to get ProductionCSID.
+            logger("Onboarding", "info", "Step 4: Requesting Production CSID...");
+            const ProductionCSID = await this.zatcaClient.issueProductionCSID(onboardingCSID.requestID);
+
+            // Return the onboarding CSID
+            return ProductionCSID;
+        } catch (error) {
+            throw error
+        }
+
     }
 
 
@@ -64,13 +69,13 @@ export class EgsOnboardingService implements IEgsOnboardingService {
     private async processInvoices(csr: string, privateKey: string) {
         logger("Onboarding", "info", "Step 3: Signing and Sending Test Invoice...");
 
-        const standard = standardInvoices(this.csrOptions);
-        const simplified = simplifiedInvoices(this.csrOptions);
+        const standard: ZATCAInvoiceProps[] = standardInvoices(this.csrOptions);
+        const simplified: ZATCAInvoiceProps[] = simplifiedInvoices(this.csrOptions);
 
-        let invoicesToProcess: any[] = [];
+        let invoicesToProcess: ZATCAInvoiceProps[] = [];
 
         switch (this.csrOptions.invoiceType) {
-            case IInvoiceType.Standerd:
+            case IInvoiceType.Standard:
                 invoicesToProcess = standard;
                 break;
             case IInvoiceType.Simplified:
@@ -82,9 +87,13 @@ export class EgsOnboardingService implements IEgsOnboardingService {
         }
 
 
-        for (const [i, invoice] of invoicesToProcess.entries()) {
+        for (const [i, invoiceData] of invoicesToProcess.entries()) {
+
             try {
-                const { invoice_hash, signed_invoice_string } = await invoice.sign(csr, privateKey);
+                const invoice = new ZATCATaxInvoice({ props: { ...invoiceData } });
+                console.log(invoice);
+
+                const { invoice_hash, signed_invoice_string } = invoice.sign(csr, privateKey);
                 logger("Onboarding", "info", `Step 3.${i + 1}: Signing and Sending Test Invoice...`);
 
                 const zatcaInvoice = await this.zatcaClient.complianceCheck(
@@ -92,8 +101,9 @@ export class EgsOnboardingService implements IEgsOnboardingService {
 
                 console.log(zatcaInvoice); // This should now log the result
             } catch (error) {
-                console.log('error');
+                throw error;
             }
+
 
         }
     }
