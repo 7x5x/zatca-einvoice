@@ -42,7 +42,7 @@ const main = async () => {
     //    const res=await egsOnboardingService.onboard('123456');
         const res = await simplifiedInvoiceSender.send(testInvoice);
         saveInvoice("Invoice.xml", res.clearedInvoice);
-        console.log(res);
+        console.log(JSON.stringify(res.validationResults, null, 2));
 
     } catch (error) {
         console.log(JSON.stringify(error, null, 2));
