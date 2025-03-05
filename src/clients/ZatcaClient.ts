@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { handleError } from "../utils/handleError";
+import { handleError as handleErrorLogs } from "../utils/handleError";
 import { logger } from "../utils/logger";
 import { TAuth } from "../types/TAuth";
 import { ZatcaEnvironmentUrl } from "../types/EZatcaEnvironment";
@@ -30,8 +30,8 @@ export class ZatcaClient {
 
         this.api = axios.create({
             baseURL: environment,
-            auth: { username, password },
             headers: {
+                Authorization: this.getAuthHeaders(),
                 "Accept-Language": language,
                 "Content-Type": "application/json",
                 "Accept-Version": version,
@@ -42,11 +42,10 @@ export class ZatcaClient {
     setAuth(auth: TAuth) {
         this.username = auth.username;
         this.password = auth.password;
-        const authHeaders = this.getAuthHeaders(auth.username, auth.password);
         this.api = axios.create({
             baseURL: this.environment,
-            auth: { ...authHeaders },
             headers: {
+                Authorization: this.getAuthHeaders(),
                 "Accept-Language": this.language,
                 "Content-Type": "application/json",
                 "Accept-Version": this.version,
@@ -54,32 +53,17 @@ export class ZatcaClient {
         });
     }
 
-    private getAuthHeaders = (certificate?: string, secret?: string): any => {
-        if (certificate && secret) {
-            const certificate_stripped = cleanUpCertificateString(certificate);
+    private getAuthHeaders = (): any => {
+        if (this.username && this.password) {
+            const certificate_stripped = cleanUpCertificateString(this.username);
             const basic = Buffer.from(
-                `${Buffer.from(certificate_stripped).toString("base64")}:${secret}`
+                `${Buffer.from(certificate_stripped).toString("base64")}:${this.password}`
             ).toString("base64");
-            return {
-                Authorization: `Basic ${basic}`,
-            };
+            return `Basic ${basic}`;
         }
         return {};
     };
 
-    // setAuth(auth: TAuth) {
-    //     this.username = auth.username;
-    //     this.password = auth.password;
-    //     this.api = axios.create({
-    //         baseURL: this.environment,
-    //         auth: auth,
-    //         headers: {
-    //             "Accept-Language": this.language,
-    //             "Content-Type": "application/json",
-    //             "Accept-Version": this.version,
-    //         },
-    //     });
-    // }
     getEnvironment() {
         return this.environment;
     }
@@ -135,8 +119,8 @@ export class ZatcaClient {
             logger("Request to ZATCA API", "info", `Request to ${path} was successful `);
             return response.data;
         } catch (error) {
-            handleError(error, "Request to ZATCA API failed");
-            throw error;
+            handleErrorLogs(error, "Request to ZATCA API failed");
+            throw error.response.data; //if its not zatca error then it will be thrown as is an empty object
         }
     }
 }

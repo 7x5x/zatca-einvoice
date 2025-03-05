@@ -8,6 +8,7 @@ const currentDate = new Date();
 const futureDate = moment(currentDate).add(5, "days");
 
 const egs_info: EGSUnitInfo = {
+    uuid:crypto.randomUUID(),
     commonName: "Majd Al Khaleej Trading Est",
     organizationIdentifier: "300516966900003",
     organizationName: "Majd Al Khaleej Trading Est",

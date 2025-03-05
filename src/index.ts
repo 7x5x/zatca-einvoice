@@ -3,7 +3,7 @@ import { EgsOnboardingService } from "./egs/EgsOnboardingService";
 import { StandardInvoiceSender } from "./invoice/standard/StandardInvoiceSender";
 import { productionData, testInvoice } from "./seed/test";
 import { ZatcaEnvironmentUrl } from "./types/EZatcaEnvironment";
-import { CSRGenerateOptions, IInvoiceType, ZATCASigningCSR } from "./zatca/signing/generateCSR";
+import { CSRGenerateOptions, IInvoiceType } from "./zatca/signing/generateCSR";
 
 
 
@@ -29,7 +29,6 @@ const csrOptions: CSRGenerateOptions = {
     egsSerialNumber: 'SN123456'
 };
 
-// Instantiate the CSR signing class
 
 const main = async () => {
 
@@ -38,17 +37,14 @@ const main = async () => {
     const egsOnboardingService = new EgsOnboardingService(csrOptions, zatcaClient);
     try {
 
-        // egsOnboardingService.onboard('123456');
-        const a = await standardInvoiceSender.send(testInvoice);
-        console.log(a)
+       const res=await egsOnboardingService.onboard('123456');
+        // const res = await standardInvoiceSender.send(testInvoice);
+        // saveInvoice("Invoice.xml", res.clearedInvoice);
+        console.log(res);
+
     } catch (error) {
-        console.log(error);
+        console.log(JSON.stringify(error, null, 2));
     }
-
-
-
-
-
 }
 
 
