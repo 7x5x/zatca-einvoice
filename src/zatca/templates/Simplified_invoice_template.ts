@@ -19,7 +19,7 @@ const template = /* XML */ `
     <cbc:UUID>SET_TERMINAL_UUID</cbc:UUID>
     <cbc:IssueDate>SET_ISSUE_DATE</cbc:IssueDate>
     <cbc:IssueTime>SET_ISSUE_TIME</cbc:IssueTime>
-    <cbc:InvoiceTypeCode name="0100000">SET_INVOICE_TYPE</cbc:InvoiceTypeCode>
+    <cbc:InvoiceTypeCode name="0200000">SET_INVOICE_TYPE</cbc:InvoiceTypeCode>
     SET_INVOICE_LEVEL_NOTE
     <cbc:DocumentCurrencyCode>SET_DOCUMENT_CURRENCT_CODE</cbc:DocumentCurrencyCode>
     <cbc:TaxCurrencyCode>SAR</cbc:TaxCurrencyCode>
@@ -71,36 +71,10 @@ const template = /* XML */ `
       </cac:PartyLegalEntity>
     </cac:Party>
   </cac:AccountingSupplierParty>
-  <cac:AccountingCustomerParty> <cac:Party>
-      <cac:PartyIdentification>
-        <cbc:ID schemeID="SET_CUSTOMER_NAT_OR_CRN">SET_CUSTOMER_COMMERCIAL_REGISTRATION_NUMBER</cbc:ID>
-      </cac:PartyIdentification>
-      <cac:PostalAddress>
-        <cbc:StreetName>SET_CUSTOMER_STREET_NAME</cbc:StreetName>
-        <cbc:BuildingNumber>SET_CUSTOMER_BUILDING_NUMBER</cbc:BuildingNumber>
-        <cbc:PlotIdentification>SET_CUSTOMER_PLOT_IDENTIFICATION</cbc:PlotIdentification>
-        <cbc:CitySubdivisionName>SET_CUSTOMER_CITY_SUBDIVISION</cbc:CitySubdivisionName>
-        <cbc:CityName>SET_CUSTOMER_CITY</cbc:CityName>
-        <cbc:PostalZone>SET_CUSTOMER_POSTAL_NUMBER</cbc:PostalZone>
-        <cac:Country>
-          <cbc:IdentificationCode>SA</cbc:IdentificationCode>
-        </cac:Country>
-      </cac:PostalAddress>
-      <cac:PartyTaxScheme>
-        <cac:TaxScheme>
-          <cbc:ID>VAT</cbc:ID>
-        </cac:TaxScheme>
-      </cac:PartyTaxScheme>
-      <cac:PartyLegalEntity>
-        <cbc:RegistrationName>SET_CUSTOMER_VAT_NAME</cbc:RegistrationName>
-      </cac:PartyLegalEntity>
-    </cac:Party></cac:AccountingCustomerParty>
-
-
 </Invoice>
 `;
 
-export default function defaultStandardTaxInvoice(props: ZATCAInvoiceProps): string {
+export default function defaultSimplifiedTaxInvoice(props: ZATCAInvoiceProps): string {
   let populated_template = template;
 
   populated_template = populated_template.replace(
@@ -194,44 +168,5 @@ export default function defaultStandardTaxInvoice(props: ZATCAInvoiceProps): str
     "SET_VAT_NAME",
     props.egs_info.organizationName
   );
-
-  populated_template = populated_template.replace(
-    "SET_CUSTOMER_COMMERCIAL_REGISTRATION_NUMBER",
-    props.customerInfo.NAT_number
-  );
-  populated_template = populated_template.replace(
-    "SET_CUSTOMER_NAT_OR_CRN",
-    props.cancelation ? "CRN" : "NAT"
-  );
-
-  populated_template = populated_template.replace(
-    "SET_CUSTOMER_STREET_NAME",
-    props.customerInfo.location.Street
-  );
-  populated_template = populated_template.replace(
-    "SET_CUSTOMER_BUILDING_NUMBER",
-    props.customerInfo.location.BuildingNumber.toString()
-  );
-  populated_template = populated_template.replace(
-    "SET_CUSTOMER_PLOT_IDENTIFICATION",
-    props.customerInfo.location.PlotIdentification.toString()
-  );
-  populated_template = populated_template.replace(
-    "SET_CUSTOMER_CITY_SUBDIVISION",
-    props.customerInfo.location.CitySubdivisionName
-  );
-  populated_template = populated_template.replace(
-    "SET_CUSTOMER_CITY",
-    props.customerInfo.location.CityName
-  );
-  populated_template = populated_template.replace(
-    "SET_CUSTOMER_POSTAL_NUMBER",
-    props.customerInfo.location.PostalZone.toString()
-  );
-  populated_template = populated_template.replace(
-    "SET_CUSTOMER_VAT_NAME",
-    props.customerInfo.RegistrationName
-  );
-
   return populated_template;
 }

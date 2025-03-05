@@ -1,7 +1,7 @@
 import moment from "moment";
-import { DocumentCurrencyCode, ZATCAPaymentMethods } from "../src/types/currencyCodes.enum"; 
+import { DocumentCurrencyCode, ZATCAPaymentMethods } from "../src/types/currencyCodes.enum";
 import { ZatcaCustomerInfo } from "../src/types/customer.interface";
-import { ZATCATaxInvoice } from "../src/zatca/templates/ZATCATaxInvoice";
+import { ZATCATaxInvoice } from "../src/zatca/xmlGenerator/ZATCATaxInvoice";
 
 const currentDate = new Date();
 const futureDate = moment(currentDate).add(5, "days");
@@ -43,7 +43,7 @@ export const customer: ZatcaCustomerInfo = {
     },
 };
 
- 
+
 export const TempInvoice = new ZATCATaxInvoice({
     props: {
         customerInfo: customer,

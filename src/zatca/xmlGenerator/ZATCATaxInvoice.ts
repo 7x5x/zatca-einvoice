@@ -2,9 +2,11 @@ import { DocumentCurrencyCode } from "../../types/currencyCodes.enum.js";
 import { ZATCAInvoiceLineItem, ZATCAInvoiceLineItemDiscount, ZATCAInvoiceProps } from "../../types/invoice.interface.js";
 import { XMLDocument } from "../../utils/index.js";
 import { generateSignedXMLString } from "../signing/index.js";
-import defaultSimplifiedTaxInvoice from "./tax_invoice_template.js";
+import { InvoiceLineCalculation } from "./InvoiceCalculator.js";
+import defaultStandardTaxInvoice from "../templates/tax_invoice_template.js";
 
 import { Decimal } from "decimal.js";
+import defaultSimplifiedTaxInvoice from "../templates/Simplified_invoice_template.js";
 
 // Set the rounding mode to ROUND_UP globally
 Decimal.set({ rounding: Decimal.ROUND_UP });
@@ -32,7 +34,7 @@ Number.prototype.toFixedHalfUp = function (n: number): string {
 };
 
 
- 
+
 export class ZATCATaxInvoice {
   private invoice_xml: XMLDocument;
 
@@ -51,7 +53,7 @@ export class ZATCATaxInvoice {
         throw new Error("Error parsing invoice XML string.");
     } else {
       if (!props) throw new Error("Unable to create new XML invoice.");
-      this.invoice_xml = new XMLDocument(defaultSimplifiedTaxInvoice(props));
+      this.invoice_xml = new XMLDocument(props.egs_info != null ? defaultStandardTaxInvoice(props) : defaultSimplifiedTaxInvoice(props));
 
       // Parsing
       this.parseLineItems(props.line_items ?? [], props);
@@ -80,16 +82,13 @@ export class ZATCATaxInvoice {
     cacClassifiedTaxCategories.push(VAT);
 
     line_item_discount =
-      (line_item.discount ? line_item.discount.amount : 0) +
-      (line_item.penalty ? line_item.penalty.amount : 0);
+      (line_item.discount ? line_item.discount.amount : 0)
     // Calc total discount
 
-    if (line_item.discount || line_item.penalty) {
+    if (line_item.discount) {
       cacAllowanceCharges.push({
         "cbc:ChargeIndicator": "false",
-        "cbc:AllowanceChargeReason": line_item.penalty
-          ? `${line_item.penalty.amount}  ${line_item.penalty.reason}`
-          : line_item.discount.reason,
+        "cbc:AllowanceChargeReason": line_item.discount.reason,
         "cbc:Amount": {
           "@_currencyID": CurrencyCode,
           // BR-DEC-01
@@ -106,10 +105,7 @@ export class ZATCATaxInvoice {
     // Calc total taxes
     // BR-KSA-DEC-02
 
-    line_item_total_taxes =
-      line_item_total_taxes +
-      (line_item_subtotal + (line_item.penalty?.amount || 0)) *
-      line_item.VAT_percent;
+    line_item_total_taxes = (line_item_total_taxes + line_item_subtotal) * line_item.VAT_percent;
 
     // BR-KSA-DEC-03, BR-KSA-51
     cacTaxTotal = {
@@ -352,6 +348,9 @@ export class ZATCATaxInvoice {
     return cacTaxCategory;
   };
 
+
+
+
   private parseLineItems(
     line_items: ZATCAInvoiceLineItem[],
     props: ZATCAInvoiceProps
@@ -447,7 +446,6 @@ export class ZATCATaxInvoice {
    * Signs the invoice.*/
 
   sign(certificate_string: string, private_key_string: string) {
-    
     return generateSignedXMLString({
       invoice_xml: this.invoice_xml,
       certificate_string: certificate_string,

@@ -11,7 +11,7 @@ export class StandardInvoiceSender extends BaseInvoiceSender {
         
         
         // Call the standard  invoice API endpoint using csid and base64 signedXml
-        const cleardInvoice = await this.zatcaClient.clearInvoice(invoice.egs_info.uuid, invoiceHash, base64Invoice);
+        const cleardInvoice = await this.zatcaClient.clearInvoice(invoice.uuid, invoiceHash, base64Invoice);
        
        
         return cleardInvoice;

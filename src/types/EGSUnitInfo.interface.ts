@@ -10,7 +10,6 @@ export interface EGSUnitLocation {
 }
 
 export interface EGSUnitInfo {
-    uuid?: string;
     commonName: string;//taxpayer_provided_id | custom_id
     organizationIdentifier: string;//VAT_number
     organizationName: string;//taxpayer_name |VAT_name  

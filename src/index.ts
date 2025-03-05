@@ -1,15 +1,16 @@
 import { ZatcaClient } from "./clients/ZatcaClient";
 import { EgsOnboardingService } from "./egs/EgsOnboardingService";
+import { SimplifiedInvoiceSender } from "./invoice/simplified/SimplifiedInvoiceSender";
 import { StandardInvoiceSender } from "./invoice/standard/StandardInvoiceSender";
 import { productionData, testInvoice } from "./seed/test";
 import { ZatcaEnvironmentUrl } from "./types/EZatcaEnvironment";
+import { saveInvoice } from "./utils/removeChars";
 import { CSRGenerateOptions, IInvoiceType } from "./zatca/signing/generateCSR";
 
 
 
 const csrOptions: CSRGenerateOptions = {
-    commonName: 'John Doe',
-    uuid: crypto.randomUUID(),
+    commonName: 'John Doe', 
     organizationIdentifier: '123456789012345',
     organizationName: 'My Organization',
     organizationUnit: 'My Unit',
@@ -34,12 +35,13 @@ const main = async () => {
 
     const zatcaClient = new ZatcaClient(ZatcaEnvironmentUrl.Simulation, productionData.cirtifacaate, productionData.secret);
     const standardInvoiceSender = new StandardInvoiceSender(productionData.cirtifacaate, productionData.privateKey, zatcaClient);
+    const simplifiedInvoiceSender = new SimplifiedInvoiceSender(productionData.cirtifacaate, productionData.privateKey, zatcaClient);
     const egsOnboardingService = new EgsOnboardingService(csrOptions, zatcaClient);
     try {
 
-       const res=await egsOnboardingService.onboard('123456');
-        // const res = await standardInvoiceSender.send(testInvoice);
-        // saveInvoice("Invoice.xml", res.clearedInvoice);
+    //    const res=await egsOnboardingService.onboard('123456');
+        const res = await simplifiedInvoiceSender.send(testInvoice);
+        saveInvoice("Invoice.xml", res.clearedInvoice);
         console.log(res);
 
     } catch (error) {

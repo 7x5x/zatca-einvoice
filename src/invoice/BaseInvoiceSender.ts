@@ -1,7 +1,7 @@
 // src/invoice/BaseInvoiceSender.ts
 import { IInvoiceSender } from './IInvoiceSender';
-import {  ZATCATaxInvoice } from '../zatca/templates/ZATCATaxInvoice';
-import { ZatcaClient } from '../clients/ZatcaClient'; 
+import { ZATCATaxInvoice } from '../zatca/xmlGenerator/ZATCATaxInvoice';
+import { ZatcaClient } from '../clients/ZatcaClient';
 import { ZATCAInvoiceProps } from '../types/invoice.interface';
 
 export abstract class BaseInvoiceSender implements IInvoiceSender {
@@ -28,8 +28,8 @@ export abstract class BaseInvoiceSender implements IInvoiceSender {
         qr: string;
     } {
 
-        const invoice = new ZATCATaxInvoice({ props: { ...invoiceData } }); 
-        const signedInvoice = invoice.sign(this.Cirtificate, this.PrivateKey); 
+        const invoice = new ZATCATaxInvoice({ props: { ...invoiceData } });
+        const signedInvoice = invoice.sign(this.Cirtificate, this.PrivateKey);
 
         return {
             signedInvoiceString: signedInvoice.signed_invoice_string,
@@ -41,4 +41,3 @@ export abstract class BaseInvoiceSender implements IInvoiceSender {
 
     abstract send(invoice: ZATCAInvoiceProps): Promise<any>;//type SignedInvoice
 }
- 

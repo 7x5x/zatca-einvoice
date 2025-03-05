@@ -1,6 +1,6 @@
 import { DocumentCurrencyCode, ZATCAPaymentMethods } from "./currencyCodes.enum";
-import {  ZatcaCustomerInfo } from "./customer.interface"; 
-import { EGSUnitInfo } from "./EGSUnitInfo.interface";  
+import { ZatcaCustomerInfo } from "./customer.interface";
+import { EGSUnitInfo } from "./EGSUnitInfo.interface";
 
 export enum ZATCAInvoiceTypes {
     INVOICE = "388",
@@ -22,8 +22,7 @@ export interface ZATCAInvoiceLineItem {
     id: number;
     name: string;
     notes?: string[];
-    quantity: number;
-    penalty?: ZATCAInvoiceLineItemDiscount;
+    quantity: number; 
     tax_exclusive_price: number;
     unitCode?: string;
     discount?: ZATCAInvoiceLineItemDiscount;
@@ -37,7 +36,8 @@ export interface ZATCAInvoicCancelation {
 }
 
 export interface ZATCAInvoiceProps {
-    egs_info: EGSUnitInfo;
+    uuid?: string;
+    egs_info?: EGSUnitInfo;
     documentCurrencyCode: DocumentCurrencyCode;
     conversion_rate?: number;
     payment_method: ZATCAPaymentMethods;
