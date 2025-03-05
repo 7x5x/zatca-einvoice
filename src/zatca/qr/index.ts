@@ -64,7 +64,7 @@ export const generateQR = ({
 
   const datetime = `${issue_date} ${issue_time}`;
   const formatted_datetime =
-    moment(datetime).format("YYYY-MM-DDTHH:mm:ss") + "Z";
+    moment(datetime, "YYYY-MM-DD HH:mm:ss").toISOString();
 
   const qr_tlv = TLV([
     seller_name,
