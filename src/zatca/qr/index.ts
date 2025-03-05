@@ -52,7 +52,7 @@ export const generateQR = ({
   ]["#text"];
 
   const conversion_rate = SAR_VAT_total / DOC_Currency_VAT_total;
-  const total = (invoice_total * conversion_rate).toString();
+  const total = (invoice_total * conversion_rate).toFixedHalfUp(2).toString();
 
   const issue_date = invoice_xml.get("Invoice/cbc:IssueDate")?.[0];
   const issue_time = invoice_xml.get("Invoice/cbc:IssueTime")?.[0];

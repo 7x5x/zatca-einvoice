@@ -53,7 +53,8 @@ export class ZATCATaxInvoice {
         throw new Error("Error parsing invoice XML string.");
     } else {
       if (!props) throw new Error("Unable to create new XML invoice.");
-      this.invoice_xml = new XMLDocument(props.customerInfo != null ? defaultStandardTaxInvoice(props) : defaultSimplifiedTaxInvoice(props));
+      this.invoice_xml = new XMLDocument(props.customerInfo ?
+        defaultStandardTaxInvoice(props) : defaultSimplifiedTaxInvoice(props));
 
       // Parsing
       this.parseLineItems(props.line_items ?? [], props);
