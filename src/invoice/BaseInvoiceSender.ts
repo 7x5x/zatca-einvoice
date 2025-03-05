@@ -1,8 +1,8 @@
 // src/invoice/BaseInvoiceSender.ts
 import { IInvoiceSender } from './IInvoiceSender';
-import { ZATCAInvoiceProps, ZATCATaxInvoice } from '../zatca/templates/ZATCATaxInvoice';
-import { ZatcaClient } from '../clients/ZatcaClient';
-import { saveInvoice } from '../utils/removeChars';
+import {  ZATCATaxInvoice } from '../zatca/templates/ZATCATaxInvoice';
+import { ZatcaClient } from '../clients/ZatcaClient'; 
+import { ZATCAInvoiceProps } from '../types/invoice.interface';
 
 export abstract class BaseInvoiceSender implements IInvoiceSender {
     private Cirtificate: string;

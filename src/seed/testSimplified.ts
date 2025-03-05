@@ -1,8 +1,8 @@
 import moment from "moment";
 import { DocumentCurrencyCode, ZATCAPaymentMethods } from "../types/currencyCodes.enum";
 import { ZatcaCustomerInfo } from "../types/customer.interface";
-import { ZATCAInvoiceProps, ZATCAInvoiceTypes, ZATCATaxInvoice } from "../zatca/templates/ZATCATaxInvoice";
 import { EGSUnitInfo } from "../types/EGSUnitInfo.interface";
+import { ZATCAInvoiceProps, ZATCAInvoiceTypes } from "../types/invoice.interface";
 const currentDate = new Date();
 const futureDate = moment(currentDate).add(5, "days");
 

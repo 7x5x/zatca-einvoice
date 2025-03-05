@@ -1,5 +1,5 @@
 // src/invoice/standard/StandardInvoiceSender.ts
-import { ZATCAInvoiceProps, ZATCATaxInvoice } from '../../zatca/templates/ZATCATaxInvoice';
+import { ZATCAInvoiceProps } from '../../types/invoice.interface'; 
 import { BaseInvoiceSender } from '../BaseInvoiceSender';
 
 export class StandardInvoiceSender extends BaseInvoiceSender {

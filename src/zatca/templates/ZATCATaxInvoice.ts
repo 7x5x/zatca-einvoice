@@ -1,13 +1,8 @@
+import { DocumentCurrencyCode } from "../../types/currencyCodes.enum.js";
+import { ZATCAInvoiceLineItem, ZATCAInvoiceLineItemDiscount, ZATCAInvoiceProps } from "../../types/invoice.interface.js";
 import { XMLDocument } from "../../utils/index.js";
 import { generateSignedXMLString } from "../signing/index.js";
-import defaultSimplifiedTaxInvoice, {
-  ZATCAInvoiceLineItem as ZATCAInvoiceLineItem,
-  ZATCAInvoiceProps,
-  ZATCAInvoiceTypes,
-  ZATCAPaymentMethods,
-  DocumentCurrencyCode,
-  ZATCAInvoiceLineItemDiscount,
-} from "./tax_invoice_template.js";
+import defaultSimplifiedTaxInvoice from "./tax_invoice_template.js";
 
 import { Decimal } from "decimal.js";
 
@@ -37,12 +32,7 @@ Number.prototype.toFixedHalfUp = function (n: number): string {
 };
 
 
-export {
-  ZATCAInvoiceLineItem,
-  ZATCAInvoiceProps,
-  ZATCAInvoiceTypes,
-  ZATCAPaymentMethods,
-};
+ 
 export class ZATCATaxInvoice {
   private invoice_xml: XMLDocument;
 

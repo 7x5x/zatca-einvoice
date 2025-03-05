@@ -1,7 +1,7 @@
 import fs from "fs";
 import dotenv from "dotenv";
 dotenv.config();
-const LOGGING = process.env.LOGGING === "0";
+const LOGGING = process.env.LOGGING === "1";
 // const LOG_FILE = "../../logs/invoice.log";
 const LOG_FILE = "logs/invoice.log";
 

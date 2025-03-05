@@ -1,0 +1,5 @@
+[3/5/2025, 10:03:15 AM] [info] [setKey] Generating new key. 
+[3/5/2025, 10:03:15 AM] [info] [generate csr] generateCsrConfig generated successfully. 
+[3/5/2025, 10:03:15 AM] [info] [generate csr] CSR generated successfully. 
+[3/5/2025, 10:03:15 AM] [info] [Onboarding] Sending CSR and OTP to compliance. CSR Length: 1064, OTP Length: 6 
+[3/5/2025, 10:03:15 AM] [undefined] [error] undefined Status: 400, Message: [object Object] 
