@@ -37,11 +37,11 @@ export interface ZATCAInvoicCancelation {
 
 export interface ZATCAInvoiceProps {
     uuid?: string;
-    egs_info?: EGSUnitInfo;
+    egs_info: EGSUnitInfo;
     documentCurrencyCode: DocumentCurrencyCode;
     conversion_rate?: number;
     payment_method: ZATCAPaymentMethods;
-    customerInfo: ZatcaCustomerInfo;
+    customerInfo?: ZatcaCustomerInfo;
     invoice_counter_number: number;
     PrepaidAmount?: number;
     invoice_serial_number: string;
