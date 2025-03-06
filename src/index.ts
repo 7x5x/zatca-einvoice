@@ -10,7 +10,7 @@ import { CSRGenerateOptions, IInvoiceType } from "./zatca/signing/generateCSR";
 
 
 const csrOptions: CSRGenerateOptions = {
-    commonName: 'John Doe', 
+    commonName: 'John Doe',
     organizationIdentifier: '123456789012345',
     organizationName: 'My Organization',
     organizationUnit: 'My Unit',
@@ -18,11 +18,11 @@ const csrOptions: CSRGenerateOptions = {
     invoiceType: IInvoiceType.Standard,
     location: {
         city: "string",
-        city_subdivision: "string",
+        citySubdivision: "string",
         street: "string",
-        plot_identification: 1,
+        plotIdentification: 1,
         building: 1,
-        postal_zone: 1,
+        postalZone: 1,
     },
     businessCategory: 'IT',
     egsSolutionName: 'MySolution',
@@ -33,16 +33,16 @@ const csrOptions: CSRGenerateOptions = {
 
 const main = async () => {
 
-    const zatcaClient = new ZatcaClient(ZatcaEnvironmentUrl.Simulation, productionData.cirtifacaate, productionData.secret);
+    const zatcaClient = new ZatcaClient(ZatcaEnvironmentUrl.Sandbox, productionData.cirtifacaate, productionData.secret);
     const standardInvoiceSender = new StandardInvoiceSender(productionData.cirtifacaate, productionData.privateKey, zatcaClient);
     const simplifiedInvoiceSender = new SimplifiedInvoiceSender(productionData.cirtifacaate, productionData.privateKey, zatcaClient);
     const egsOnboardingService = new EgsOnboardingService(csrOptions, zatcaClient);
     try {
 
-    //    const res=await egsOnboardingService.onboard('123456');
-        const res = await simplifiedInvoiceSender.send(testInvoice);
-        saveInvoice("Invoice.xml", res.clearedInvoice);
-        console.log(JSON.stringify(res.validationResults, null, 2));
+        const res = await egsOnboardingService.onboard('123456');
+        // const res = await simplifiedInvoiceSender.send(testInvoice);
+        // saveInvoice("Invoice.xml", res.clearedInvoice);
+        console.log(JSON.stringify(res, null, 2));
 
     } catch (error) {
         console.log(JSON.stringify(error, null, 2));

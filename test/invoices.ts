@@ -8,16 +8,16 @@ const futureDate = moment(currentDate).add(5, "days");
 
 
 export const invoice: any = {
-    invoice_counter_number: 1,
-    invoice_serial_number: "EGS1-886431145-1",
+    invoiceCounter: 1,
+    invoiceSerialNumber: "EGS1-886431145-1",
     documentCurrencyCode: DocumentCurrencyCode.SAR,
-    payment_method: ZATCAPaymentMethods.CASH,
-    issue_date: moment(new Date()).format("YYYY-MM-DD"),
-    delivery_date: futureDate.format("YYYY-MM-DD"),
-    issue_time: moment(new Date()).format("HH:mm:ss"),
-    previous_invoice_hash:
+    paymentMethod: ZATCAPaymentMethods.CASH,
+    issueDate: moment(new Date()).format("YYYY-MM-DD"),
+    deliveryDate: futureDate.format("YYYY-MM-DD"),
+    issueTime: moment(new Date()).format("HH:mm:ss"),
+    PIH:
         "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==",
-    line_items: [
+    lineItems: [
         {
             id: 1,
             name: "TEST NAME",
@@ -30,7 +30,7 @@ export const invoice: any = {
 };
 
 export const customer: ZatcaCustomerInfo = {
-    NAT_number: "311111111111113",
+    NATNumber: "311111111111113",
     // PartyTaxScheme: "strings11111111111",
     RegistrationName: "Acme Widget’s LTD 2",
     location: {
@@ -47,7 +47,7 @@ export const customer: ZatcaCustomerInfo = {
 export const TempInvoice = new ZATCATaxInvoice({
     props: {
         customerInfo: customer,
-        egs_info: customer,
+        egsInfo: customer,
         ...invoice,
     },
 });

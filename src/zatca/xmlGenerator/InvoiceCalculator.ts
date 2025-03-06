@@ -53,14 +53,14 @@ class InvoiceCalculations {
 
     public static getInvoiceLinesCalc = (lineItems: ZATCAInvoiceLineItem[]): InvoiceLineCalculation[] => {
         return lineItems.map((lineItem, i): InvoiceLineCalculation => {
-            const baseAmount = lineItem.tax_exclusive_price;
+            const baseAmount = lineItem.netUnitPrice;
             const allowanceChargeAmount = (lineItem.discount ? lineItem.discount.amount : 0);
             const priceAmount = baseAmount - allowanceChargeAmount; //BT-146 
 
             const invoicedQuantity = lineItem.quantity;
             const lineExtensionAmount = priceAmount * invoicedQuantity;//BT-131
 
-            const taxAmount = lineExtensionAmount * lineItem.VAT_percent;
+            const taxAmount = lineExtensionAmount * lineItem.VATPercent;
             const roundingAmount = (lineExtensionAmount + taxAmount).toFixedHalfUp(2);
 
             this.TaxExclusiveAmount += lineExtensionAmount;
@@ -103,8 +103,8 @@ class InvoiceCalculations {
         };
     }
 
-    getSARTaxTotalCalc = (taxes_total: number, CurrencyCode: DocumentCurrencyCode, conversion_rate: number) => {
-        return (CurrencyCode != DocumentCurrencyCode.SAR ? taxes_total * conversion_rate : taxes_total).toFixedHalfUp(2);
+    getSARTaxTotalCalc = (taxes_total: number, CurrencyCode: DocumentCurrencyCode, conversionRate: number) => {
+        return (CurrencyCode != DocumentCurrencyCode.SAR ? taxes_total * conversionRate : taxes_total).toFixedHalfUp(2);
     }
 }
 

@@ -15,42 +15,42 @@ export interface ZATCAInvoiceLineItemDiscount {
 }
 
 export interface ZATCAInvoiceLineItemTax {
-    percent_amount: number;
+    percentAmount: number;
 }
 
 export interface ZATCAInvoiceLineItem {
     id: number;
     name: string;
     notes?: string[];
-    quantity: number; 
-    tax_exclusive_price: number;
+    quantity: number;
+    netUnitPrice: number;
     unitCode?: string;
     discount?: ZATCAInvoiceLineItemDiscount;
-    VAT_percent?: number;
+    VATPercent?: number;
 }
 
 export interface ZATCAInvoicCancelation {
-    canceled_invoice_number: number;
-    cancelation_type: ZATCAInvoiceTypes;
+    canceledInvoiceNumber: number;
+    cancelationType: ZATCAInvoiceTypes;
     reason: string;
 }
 
 export interface ZATCAInvoiceProps {
     uuid?: string;
-    egs_info: EGSUnitInfo;
+    egsInfo: EGSUnitInfo;
     documentCurrencyCode: DocumentCurrencyCode;
-    conversion_rate?: number;
-    payment_method: ZATCAPaymentMethods;
+    conversionRate?: number;
+    paymentMethod: ZATCAPaymentMethods;
     customerInfo?: ZatcaCustomerInfo;
-    invoice_counter_number: number;
+    invoiceCounter: number;
     PrepaidAmount?: number;
-    invoice_serial_number: string;
-    issue_date: string;
-    delivery_date: string;
-    issue_time: string;
-    invoice_level_note?: string;
+    invoiceSerialNumber: string;
+    issueDate: string;
+    deliveryDate: string;
+    issueTime: string;
+    invoiceLevelNote?: string;
     invoice_level_discount?: ZATCAInvoiceLineItemDiscount;
-    previous_invoice_hash: string;
-    line_items?: ZATCAInvoiceLineItem[];
+    PIH: string;
+    lineItems?: ZATCAInvoiceLineItem[];
     cancelation?: ZATCAInvoicCancelation;
 }

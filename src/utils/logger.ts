@@ -8,14 +8,14 @@ const LOG_FILE = "logs/invoice.log";
 const MAX_LOG_SIZE = 10 * 1024 * 1024; // 10 MB
 
 export const activeSessions = new Map<string, string[]>();
-export const logger = (type: string, source: string, message: string, sessionId?: string) => {
+export const logger = (source: string, type: string, message: string, sessionId?: string) => {
     if (!LOGGING) return;
 
     const currentSessionId = sessionId || crypto.randomUUID();
 
     const timestamp = new Date().toLocaleString();
     // const logMessage = `\x1b[33m${timestamp}\x1b[0m: [\x1b[36m${source}\x1b[0m] [\x1b[31m${type}\x1b[0m] ${message}\n`;
-    const logMessage = `[${timestamp}] [${source}] [${type}] ${message} \n`;
+    const logMessage = `[${timestamp}]  [${type}]   [${source}]    ${message} \n`;
 
     if (!activeSessions.has(currentSessionId)) {
         activeSessions.set(currentSessionId, []);

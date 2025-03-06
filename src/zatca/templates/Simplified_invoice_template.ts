@@ -99,13 +99,13 @@ export default function defaultSimplifiedTaxInvoice(props: ZATCAInvoiceProps): s
   populated_template = populated_template.replace(
     "SET_INVOICE_TYPE",
     props.cancelation
-      ? props.cancelation.cancelation_type
+      ? props.cancelation.cancelationType
       : ZATCAInvoiceTypes.INVOICE
   );
   populated_template = populated_template.replace(
     "SET_INVOICE_LEVEL_NOTE",
-    props.invoice_level_note != null
-      ? `<cbc:Note>${props.invoice_level_note}</cbc:Note>`
+    props.invoiceLevelNote != null
+      ? `<cbc:Note>${props.invoiceLevelNote}</cbc:Note>`
       : ""
   );
   populated_template = populated_template.replace(
@@ -116,7 +116,7 @@ export default function defaultSimplifiedTaxInvoice(props: ZATCAInvoiceProps): s
   if (props.cancelation) {
     populated_template = populated_template.replace(
       "SET_BILLING_REFERENCE",
-      BillingReferenceTag(props.cancelation.canceled_invoice_number)
+      BillingReferenceTag(props.cancelation.canceledInvoiceNumber)
     );
   } else {
     populated_template = populated_template.replace(
@@ -127,7 +127,7 @@ export default function defaultSimplifiedTaxInvoice(props: ZATCAInvoiceProps): s
 
   populated_template = populated_template.replace(
     "SET_INVOICE_SERIAL_NUMBER",
-    props.invoice_serial_number
+    props.invoiceSerialNumber
   );
   populated_template = populated_template.replace(
     "SET_TERMINAL_UUID",
@@ -135,57 +135,57 @@ export default function defaultSimplifiedTaxInvoice(props: ZATCAInvoiceProps): s
   );
   populated_template = populated_template.replace(
     "SET_ISSUE_DATE",
-    props.issue_date
+    props.issueDate
   );
   populated_template = populated_template.replace(
     "SET_ISSUE_TIME",
-    props.issue_time
+    props.issueTime
   );
   populated_template = populated_template.replace(
     "SET_PREVIOUS_INVOICE_HASH",
-    props.previous_invoice_hash
+    props.PIH
   );
   populated_template = populated_template.replace(
     "SET_INVOICE_COUNTER_NUMBER",
-    props.invoice_counter_number.toString()
+    props.invoiceCounter.toString()
   );
   populated_template = populated_template.replace(
     "SET_COMMERCIAL_REGISTRATION_NUMBER",
-    props.egs_info.CRN_number
+    props.egsInfo.CRNNumber
   );
 
   populated_template = populated_template.replace(
     "SET_STREET_NAME",
-    props.egs_info.location.street
+    props.egsInfo.location.street
   );
   populated_template = populated_template.replace(
     "SET_BUILDING_NUMBER",
-    props.egs_info.location.building.toString()
+    props.egsInfo.location.building.toString()
   );
   populated_template = populated_template.replace(
     "SET_PLOT_IDENTIFICATION",
-    props.egs_info.location.plot_identification.toString()
+    props.egsInfo.location.plotIdentification.toString()
   );
   populated_template = populated_template.replace(
     "SET_CITY_SUBDIVISION",
-    props.egs_info.location.city_subdivision
+    props.egsInfo.location.citySubdivision
   );
   populated_template = populated_template.replace(
     "SET_CITY",
-    props.egs_info.location.city
+    props.egsInfo.location.city
   );
   populated_template = populated_template.replace(
     "SET_POSTAL_NUMBER",
-    props.egs_info.location.postal_zone.toString()
+    props.egsInfo.location.postalZone.toString()
   );
 
   populated_template = populated_template.replace(
     "SET_VAT_NUMBER",
-    props.egs_info.organizationIdentifier
+    props.egsInfo.organizationIdentifier
   );
   populated_template = populated_template.replace(
     "SET_VAT_NAME",
-    props.egs_info.organizationName
+    props.egsInfo.organizationName
   );
   return populated_template;
 }

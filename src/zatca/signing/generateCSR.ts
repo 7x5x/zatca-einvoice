@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import { execSync, spawnSync } from 'child_process';
 import { EGSUnitInfo, EGSUnitLocation } from '../../types/EGSUnitInfo.interface';
 import { logger } from '../../utils/logger';
-import { handleError } from '../../utils/handleError';
+import { handleError as handleErrorLogs } from '../../utils/handleError';
 import { ZatcaEnvironmentMode } from '../../types/EZatcaEnvironment';
 
 export enum IInvoiceType {
@@ -39,7 +39,6 @@ class ZATCASigningCSR {
 
     // Generate CSR and return the output
     public generate() {
-
         this.setKey();
         this.writeCsrConfig();
         const privateKey = this.key.export({ type: 'pkcs8', format: 'pem' }).toString();
@@ -55,8 +54,7 @@ class ZATCASigningCSR {
             logger("generate csr", "info", "CSR generated successfully.");
             return { privateKey, csr };
         } catch (error) {
-            logger("generate", "error", `Error generating CSR: ${error.message}`);
-            handleError(error, "Onboarding");
+            logger("generate csr", "error", `Error generateing csr  `);
             return { privateKey: null, csr: null };
         }
     }
@@ -87,9 +85,7 @@ class ZATCASigningCSR {
                 key: fs.readFileSync(this.privateKeyPath as string),
                 passphrase: this.privateKeyPassword
             });
-            logger("setKey", "info", `Private key provided and set.`);
         } else {
-            logger("setKey", "info", "Generating new key.");
             this.generateKey();
         }
     }
@@ -122,8 +118,7 @@ class ZATCASigningCSR {
     }
 
     private writeCsrConfig(): void {
-        this.csrConfigPath = `./${crypto.randomUUID()}.conf`;
-        logger("generate csr", "info", "generateCsrConfig generated successfully.");
+        this.csrConfigPath = `./${crypto.randomUUID()}.conf`; 
         fs.writeFileSync(this.csrConfigPath, this.generateCsrConfig());
     }
 

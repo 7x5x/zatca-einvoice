@@ -1,14 +1,14 @@
 import moment from "moment";
 import { DocumentCurrencyCode, ZATCAPaymentMethods } from "../types/currencyCodes.enum";
 import { EGSUnitInfo } from "../types/EGSUnitInfo.interface";
-import { ZATCAInvoiceProps } from "../types/invoice.interface";
+import { ZATCAInvoiceLineItem, ZATCAInvoiceProps } from "../types/invoice.interface";
 import { IInvoiceType } from "../zatca/signing/generateCSR";
 
 const currentDate = new Date();
 const futureDate = moment(currentDate).add(5, "days");
 
 const egs_info: EGSUnitInfo = {
-    
+
     commonName: "Majd Al Khaleej Trading Est",
     organizationIdentifier: "300516966900003",
     organizationName: "Majd Al Khaleej Trading Est",
@@ -18,59 +18,66 @@ const egs_info: EGSUnitInfo = {
     location: {
         street: "AI Madinah Almunawaruh",
         building: 7174,
-        plot_identification: 2581,
-        city_subdivision: "Al Fayha Dist",
+        plotIdentification: 2581,
+        citySubdivision: "Al Fayha Dist",
         city: "RAS TANNURAH",
-        postal_zone: 32817
+        postalZone: 32817
     },
     businessCategory: "2066003018",
     egsSolutionName: "2066003018",
     egsModel: "2066003018",
     egsSerialNumber: "2066003018"
 }
+const customerInfo = {
+    NATNumber: "300000432310003",
+    RegistrationName: "Saudi Arabian Oil Company",
+    location: {
+        Street: "Dhahran ",
+        BuildingNumber: 1,
+        PlotIdentification: 31311,
+        CitySubdivisionName: "الظهران",
+        CityName: "Dhahran",
+        PostalZone: 31311
+    }
+};
+
+
+const invoiceBody: ZATCAInvoiceLineItem[] = [
+    {
+        id: 1,
+        name: "BOSS",
+        unitCode: "Piece",
+        notes: [
+            "BOSS WELDING; 1/2 IN NPS OUTLET,51 MM (2 IN) OA LG,CL 6000, SCH160 SUPPLY,CS,38 MM (1-1/2 IN) OD OD,SOCKET WELD OUTLET,ASTM A105,ANSI B16.11,AD-036643-001,FOR HIGH TEMP SERVICE."
+        ],
+        quantity: 3,
+        netUnitPrice: 9.14,
+        discount: {
+            amount: 0.0,
+            reason: "No reason provided"
+        },
+        VATPercent: 0.15
+    }
+]; 
 
 export const testInvoice: ZATCAInvoiceProps = {
-    egs_info: egs_info,
-    customerInfo: {
-        NAT_number: "300000432310003",
-        RegistrationName: "Saudi Arabian Oil Company",
-        location: {
-            Street: "Dhahran ",
-            BuildingNumber: 1,
-            PlotIdentification: 31311,
-            CitySubdivisionName: "الظهران",
-            CityName: "Dhahran",
-            PostalZone: 31311
-        }
-    },
+    egsInfo: egs_info,
+    customerInfo: customerInfo,
     uuid: crypto.randomUUID(),
-    payment_method: ZATCAPaymentMethods.BANK_ACCOUNT,
-    conversion_rate: 3.75,
-    invoice_counter_number: 24278,
-    delivery_date: "2024-12-01",
+    invoiceSerialNumber: "24278",
+    invoiceCounter: 24278,
+    conversionRate: 3.75,
+    
+    paymentMethod: ZATCAPaymentMethods.BANK_ACCOUNT,
     documentCurrencyCode: DocumentCurrencyCode.USD,
-    invoice_level_note: "inv.Notes",
-    invoice_serial_number: "24278",
-    previous_invoice_hash: "739zhJpzCtii4PgUNGWGMpRnHl0KjtlohI8SSuU6Uko=",
-    line_items: [
-        {
-            id: 1,
-            name: "BOSS",
-            unitCode: "Piece",
-            notes: [
-                "BOSS WELDING; 1/2 IN NPS OUTLET,51 MM (2 IN) OA LG,CL 6000, SCH160 SUPPLY,CS,38 MM (1-1/2 IN) OD OD,SOCKET WELD OUTLET,ASTM A105,ANSI B16.11,AD-036643-001,FOR HIGH TEMP SERVICE."
-            ],
-            quantity: 3,
-            tax_exclusive_price: 9.14,
-            discount: {
-                amount: 0.0,
-                reason: "No reason provided"
-            },
-            VAT_percent: 0.15
-        }
-    ],
-    issue_date: moment(new Date()).format("YYYY-MM-DD"),
-    issue_time: moment(new Date()).format("HH:mm:ss")
+
+    deliveryDate: futureDate.format("YYYY-MM-DD"),
+    issueDate: moment(new Date()).format("YYYY-MM-DD"),
+    issueTime: moment(new Date()).format("HH:mm:ss"),
+    PIH: "739zhJpzCtii4PgUNGWGMpRnHl0KjtlohI8SSuU6Uko=",
+
+    lineItems: invoiceBody,
+
 };
 
 const tempTrivateKey = "LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IUUNBUUVFSUVqMnRSa0xPejFNc2VETSt2ZGJkZmE1WUdjYUJzYlBnVDJZUTkrb21lVjZvQWNHQlN1QkJBQUsKb1VRRFFnQUU2NGxFVlFIemJQeGw2YkVDSkx5TU9zRC9sdHM5Q0d1Skd1ZXF0MjBzVFAvcGVlcUNSMFZWbmpzdApRVzRzTzdLcGpPOElZTDNJV3dxSUJBRWxvcHdIOWc9PQotLS0tLUVORCBFQyBQUklWQVRFIEtFWS0tLS0t";

@@ -1,5 +1,6 @@
 // src/egs/EgsOnboardingService.ts
 import { IEgsOnboardingService } from "./IEgsOnboardingService";
+import * as crypto from 'crypto';
 import { CSRGenerateOptions, IInvoiceType, ZATCASigningCSR } from "../zatca/signing/generateCSR";
 import { ZatcaClient } from "../clients/ZatcaClient";
 import { simplifiedInvoices } from "../seed/testSimplified";
@@ -35,7 +36,7 @@ export class EgsOnboardingService implements IEgsOnboardingService {
      */
 
     async onboard(otp: string): Promise<string> {
-
+        const startTime = Date.now();
         try {
             // Step 1: Generate a private key and CSR.
             const { privateKey, csr } = this.zatcaSigningCSR.generate();
@@ -46,16 +47,20 @@ export class EgsOnboardingService implements IEgsOnboardingService {
             this.zatcaClient.setAuth({ username: onboardingCSID.binarySecurityToken, password: onboardingCSID.secret });
 
 
-            await this.processInvoices(csr, privateKey);
-
+            // Step 3: Process test invoices.
+            await this.processInvoices(onboardingCSID.binarySecurityToken, privateKey);
 
             // Step 4: Send the onboardingCSID.requestid to get ProductionCSID.
-            logger("Onboarding", "info", "Step 4: Requesting Production CSID...");
             const ProductionCSID = await this.zatcaClient.issueProductionCSID(onboardingCSID.requestID);
+
+            const endTime = Date.now();
+            logger("Onboarding", "info", `Step 3 completed successfully in ${(endTime - startTime) / 1000}s \n \n `);
 
             // Return the onboarding CSID
             return ProductionCSID;
         } catch (error) {
+            logger("Onboarding", "error", `Error during onboarding: ${error.message}`);
+            logger("Onboarding", "debug", `Stack Trace: ${error.stack}`);
             throw error
         }
 
@@ -64,11 +69,11 @@ export class EgsOnboardingService implements IEgsOnboardingService {
 
     /**
      * Processes test invoices based on invoice type.
-     * @param csr - Certificate Signing Request
+     * @param CSID - onboarding Certificate Signing Request
      * @param privateKey - Generated private key
      */
-    private async processInvoices(csr: string, privateKey: string) {
-        logger("Onboarding", "info", "Step 3: Signing and Sending Test Invoice...");
+    private async processInvoices(CSID: string, privateKey: string) {
+
 
         const standard: ZATCAInvoiceProps[] = standardInvoices(this.csrOptions);
         const simplified: ZATCAInvoiceProps[] = simplifiedInvoices(this.csrOptions);
@@ -87,25 +92,31 @@ export class EgsOnboardingService implements IEgsOnboardingService {
                 break;
         }
 
+        let PIH = "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==";
 
         for (const [i, invoiceData] of invoicesToProcess.entries()) {
 
             try {
+                invoiceData.PIH = PIH;
+                const ICV = i + 1;
+                invoiceData.invoiceCounter = ICV;
+
                 const invoice = new ZATCATaxInvoice({ props: { ...invoiceData } });
-                console.log(invoice);
+                const { invoiceHash, signedInvoiceString } = invoice.sign(CSID, privateKey);
+                const base64Invoice = Buffer.from(signedInvoiceString).toString('base64');
 
-                const { invoice_hash, signed_invoice_string } = invoice.sign(csr, privateKey);
-                logger("Onboarding", "info", `Step 3.${i + 1}: Signing and Sending Test Invoice...`);
+                await this.zatcaClient.complianceCheck(invoiceData.uuid, invoiceHash, base64Invoice);
+                logger("Onboarding", "success", `Invoice ${ICV} successfully processed and sent to zatca.`);
 
-                const zatcaInvoice = await this.zatcaClient.complianceCheck(
-                    invoiceData.uuid, invoice_hash, signed_invoice_string);
+                PIH = invoiceHash;
 
-                console.log(zatcaInvoice); // This should now log the result
+
             } catch (error) {
-                throw error;
+                logger("Onboarding", "error", `Error processing Invoice `);
+                throw error;// Rethrow error for handling at a higher level
             }
 
-
         }
+
     }
 }

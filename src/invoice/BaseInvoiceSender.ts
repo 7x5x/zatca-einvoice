@@ -32,8 +32,8 @@ export abstract class BaseInvoiceSender implements IInvoiceSender {
         const signedInvoice = invoice.sign(this.Cirtificate, this.PrivateKey);
 
         return {
-            signedInvoiceString: signedInvoice.signed_invoice_string,
-            invoiceHash: signedInvoice.invoice_hash,
+            signedInvoiceString: signedInvoice.signedInvoiceString,
+            invoiceHash: signedInvoice.invoiceHash,
             qr: signedInvoice.qr
         };
     }

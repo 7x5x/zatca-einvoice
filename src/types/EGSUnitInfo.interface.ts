@@ -2,11 +2,11 @@ import { IInvoiceType } from "../zatca/signing/generateCSR";
 
 export interface EGSUnitLocation {
     city: string;
-    city_subdivision: string;
+    citySubdivision: string;
     street: string;
-    plot_identification: number;
+    plotIdentification: number;
     building: number;
-    postal_zone: number;
+    postalZone: number;
 }
 
 export interface EGSUnitInfo {
@@ -16,7 +16,7 @@ export interface EGSUnitInfo {
     organizationUnit: string;//branch_name
     country: string;
     invoiceType: IInvoiceType;
-    CRN_number?: string;
+    CRNNumber?: string;
     location: EGSUnitLocation;
     businessCategory: string;//branch_industry
     egsSolutionName: string;

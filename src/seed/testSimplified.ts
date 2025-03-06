@@ -2,76 +2,56 @@ import moment from "moment";
 import { DocumentCurrencyCode, ZATCAPaymentMethods } from "../types/currencyCodes.enum";
 import { ZatcaCustomerInfo } from "../types/customer.interface";
 import { EGSUnitInfo } from "../types/EGSUnitInfo.interface";
-import { ZATCAInvoiceProps, ZATCAInvoiceTypes } from "../types/invoice.interface";
+import { ZATCAInvoiceLineItem, ZATCAInvoiceProps, ZATCAInvoiceTypes } from "../types/invoice.interface";
 const currentDate = new Date();
 const futureDate = moment(currentDate).add(5, "days");
 
 export const simplifiedInvoices = (egsUnitInfo: EGSUnitInfo): ZATCAInvoiceProps[] => {
-    const tempInvoice: any = {
-        invoice_counter_number: 1,
-        invoice_serial_number: "EGS1-886431145-1",
+
+
+
+    const lineItems: ZATCAInvoiceLineItem[] = [
+        {
+            id: 1,
+            name: "TEST NAME",
+            notes: ["Test To Create New EGS"],
+            quantity: 1,
+            netUnitPrice: 100,
+            VATPercent: 0.15,
+        },
+    ]
+    const invoice: any = {
+        egsInfo: egsUnitInfo,
+        invoiceCounter: 1,
+        invoiceSerialNumber: "OnBoarding",
         documentCurrencyCode: DocumentCurrencyCode.SAR,
-        payment_method: ZATCAPaymentMethods.CASH,
-        issue_date: moment(new Date()).format("YYYY-MM-DD"),
-        delivery_date: futureDate.format("YYYY-MM-DD"),
-        issue_time: moment(new Date()).format("HH:mm:ss"),
-        previous_invoice_hash: "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==",
-        line_items: [
-            {
-                id: 1,
-                name: "TEST NAME",
-                notes: ["Test To Create New EGS"],
-                quantity: 1,
-                tax_exclusive_price: 1000,
-                VAT_percent: 0.15,
-            },
-        ],
+        paymentMethod: ZATCAPaymentMethods.CASH,
+        issueDate: moment(new Date()).format("YYYY-MM-DD"),
+        deliveryDate: futureDate.format("YYYY-MM-DD"),
+        issueTime: moment(new Date()).format("HH:mm:ss"),
+        PIH: "",
+        lineItems: lineItems,
     };
+    const debitNot: ZATCAInvoiceProps = {
 
-    const customer: ZatcaCustomerInfo = {
-        NAT_number: "311111111111113",
-        RegistrationName: "Acme Widget’s LTD 2",
-        location: {
-            Street: "الرياض",
-            BuildingNumber: 1111,
-            PlotIdentification: 2223,
-            CitySubdivisionName: "الرياض",
-            CityName: "الدمام | Dammam",
-            PostalZone: 12222,
-        },
-    };
-
-
-    const invoice: ZATCAInvoiceProps = {
-        customerInfo: customer,
-        egs_info: egsUnitInfo,
-        ...tempInvoice,
-    };
-
-    const debit_not: ZATCAInvoiceProps = {
-
-        customerInfo: customer,
-        egs_info: egsUnitInfo,
-        ...tempInvoice,
+        ...invoice,
         cancelation: {
-            canceled_invoice_number: 1,
+            canceledInvoiceNumber: 1,
             reason: "CANCELLATION_OR_TERMINATION",
-            cancelation_type: ZATCAInvoiceTypes.DEBIT_NOTE,
+            cancelationType: ZATCAInvoiceTypes.DEBIT_NOTE,
         },
 
     };
-    const credit_note: ZATCAInvoiceProps = {
+    const creditNote: ZATCAInvoiceProps = {
 
-        customerInfo: customer,
-        egs_info: egsUnitInfo,
-        ...tempInvoice,
+        ...invoice,
         cancelation: {
-            canceled_invoice_number: 1,
+            canceledInvoiceNumber: 1,
             reason: "CANCELLATION_OR_TERMINATION",
-            cancelation_type: ZATCAInvoiceTypes.CREDIT_NOTE,
+            cancelationType: ZATCAInvoiceTypes.CREDIT_NOTE,
         },
     };
 
-    return [invoice, debit_not, credit_note];
+    return [invoice, debitNot, creditNote];
 
 }

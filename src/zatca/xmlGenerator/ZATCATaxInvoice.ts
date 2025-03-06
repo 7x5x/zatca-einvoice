@@ -57,7 +57,7 @@ export class ZATCATaxInvoice {
         defaultStandardTaxInvoice(props) : defaultSimplifiedTaxInvoice(props));
 
       // Parsing
-      this.parseLineItems(props.line_items ?? [], props);
+      this.parseLineItems(props.lineItems ?? [], props);
     }
   }
 
@@ -72,9 +72,9 @@ export class ZATCATaxInvoice {
     let cacTaxTotal = {};
 
     const VAT = {
-      "cbc:ID": line_item.VAT_percent ? "S" : "O",
-      "cbc:Percent": line_item.VAT_percent
-        ? (line_item.VAT_percent * 100).toFixedHalfUp(2)
+      "cbc:ID": line_item.VATPercent ? "S" : "O",
+      "cbc:Percent": line_item.VATPercent
+        ? (line_item.VATPercent * 100).toFixedHalfUp(2)
         : undefined,
       "cac:TaxScheme": {
         "cbc:ID": "VAT",
@@ -99,14 +99,14 @@ export class ZATCATaxInvoice {
     }
 
     let line_item_subtotal =
-      (line_item.tax_exclusive_price -
+      (line_item.netUnitPrice -
         line_item_discount / line_item.quantity) *
       line_item.quantity;
 
     // Calc total taxes
     // BR-KSA-DEC-02
 
-    line_item_total_taxes = (line_item_total_taxes + line_item_subtotal) * line_item.VAT_percent;
+    line_item_total_taxes = (line_item_total_taxes + line_item_subtotal) * line_item.VATPercent;
 
     // BR-KSA-DEC-03, BR-KSA-51
     cacTaxTotal = {
@@ -169,7 +169,7 @@ export class ZATCATaxInvoice {
         "cac:Price": {
           "cbc:PriceAmount": {
             "@_currencyID": CurrencyCode,
-            "#text": line_item.tax_exclusive_price,
+            "#text": line_item.netUnitPrice,
           },
         },
       },
@@ -229,9 +229,9 @@ export class ZATCATaxInvoice {
   };
 
   private constructTaxTotal = (
-    line_items: ZATCAInvoiceLineItem[],
+    lineItems: ZATCAInvoiceLineItem[],
     CurrencyCode: DocumentCurrencyCode,
-    conversion_rate: number,
+    conversionRate: number,
     invoice_level_discount: number
   ) => {
     const cacTaxSubtotal: any[] = [];
@@ -274,22 +274,22 @@ export class ZATCATaxInvoice {
 
     let taxes_total = 0;
     let taxable_amount = 0;
-    line_items.map((line_item) => {
+    lineItems.map((line_item) => {
       const total_line_item_discount = line_item.discount
         ? line_item.discount.amount
         : 0;
       const item_taxable_amount =
-        line_item.tax_exclusive_price * line_item.quantity -
+        line_item.netUnitPrice * line_item.quantity -
         total_line_item_discount -
-        invoice_level_discount / line_items.length;
+        invoice_level_discount / lineItems.length;
       taxable_amount += item_taxable_amount;
 
-      let tax_amount = line_item.VAT_percent * item_taxable_amount;
+      let tax_amount = line_item.VATPercent * item_taxable_amount;
 
       taxes_total += tax_amount;
     });
 
-    addTaxSubtotal(taxable_amount, taxes_total, line_items[0].VAT_percent);
+    addTaxSubtotal(taxable_amount, taxes_total, lineItems[0].VATPercent);
 
     return [
       {
@@ -304,7 +304,7 @@ export class ZATCATaxInvoice {
         "cbc:TaxAmount": {
           "@_currencyID": "SAR",
           "#text": (CurrencyCode != DocumentCurrencyCode.SAR
-            ? taxes_total * conversion_rate
+            ? taxes_total * conversionRate
             : taxes_total
           ).toFixedHalfUp(2),
         },
@@ -353,14 +353,14 @@ export class ZATCATaxInvoice {
 
 
   private parseLineItems(
-    line_items: ZATCAInvoiceLineItem[],
+    lineItems: ZATCAInvoiceLineItem[],
     props: ZATCAInvoiceProps
   ) {
     let total_taxes: number = 0;
     let total_subtotal: number = 0;
     let invoice_line_items: any[] = [];
 
-    line_items.map((line_item) => {
+    lineItems.map((line_item) => {
       const { line_item_xml, line_item_totals } = this.constructLineItem(
         line_item,
         props.documentCurrencyCode
@@ -377,7 +377,7 @@ export class ZATCATaxInvoice {
     props.invoice_level_discount
       ? (total_taxes =
         total_taxes -
-        props.invoice_level_discount.amount * line_items[0].VAT_percent)
+        props.invoice_level_discount.amount * lineItems[0].VATPercent)
       : total_taxes;
 
     total_subtotal = props.invoice_level_discount
@@ -385,18 +385,18 @@ export class ZATCATaxInvoice {
       : total_subtotal;
 
     this.invoice_xml.set("Invoice/cac:Delivery", false, {
-      "cbc:ActualDeliveryDate": props.delivery_date,
+      "cbc:ActualDeliveryDate": props.deliveryDate,
     });
 
     if (props.cancelation) {
       // Invoice canceled. Turned into credit/debit note. Must have PaymentMeans
       this.invoice_xml.set("Invoice/cac:PaymentMeans", false, {
-        "cbc:PaymentMeansCode": props.payment_method,
+        "cbc:PaymentMeansCode": props.paymentMethod,
         "cbc:InstructionNote": props.cancelation.reason ?? "No note Specified",
       });
     } else {
       this.invoice_xml.set("Invoice/cac:PaymentMeans", false, {
-        "cbc:PaymentMeansCode": props.payment_method,
+        "cbc:PaymentMeansCode": props.paymentMethod,
       });
     }
 
@@ -407,7 +407,7 @@ export class ZATCATaxInvoice {
         this.constructAllowanceCharge(
           props.invoice_level_discount,
           props.documentCurrencyCode,
-          line_items[0].VAT_percent
+          lineItems[0].VATPercent
         )
       );
 
@@ -415,9 +415,9 @@ export class ZATCATaxInvoice {
       "Invoice/cac:TaxTotal",
       false,
       this.constructTaxTotal(
-        line_items,
+        lineItems,
         props.documentCurrencyCode,
-        props.conversion_rate,
+        props.conversionRate,
         props.invoice_level_discount ? props.invoice_level_discount.amount : 0
       )
     );

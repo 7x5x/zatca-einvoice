@@ -26,7 +26,7 @@ export const generateQR = ({
 }: QRParams): string => {
   // Hash
 
-  const invoice_hash: string = getInvoiceHash(invoice_xml);
+  const invoiceHash: string = getInvoiceHash(invoice_xml);
 
   // Extract required tags
   const seller_name = invoice_xml.get(
@@ -51,18 +51,18 @@ export const generateQR = ({
     "cbc:TaxAmount"
   ]["#text"];
 
-  const conversion_rate = SAR_VAT_total / DOC_Currency_VAT_total;
-  const total = (invoice_total * conversion_rate).toFixedHalfUp(2).toString();
+  const conversionRate = SAR_VAT_total / DOC_Currency_VAT_total;
+  const total = (invoice_total * conversionRate).toFixedHalfUp(2).toString();
 
-  const issue_date = invoice_xml.get("Invoice/cbc:IssueDate")?.[0];
-  const issue_time = invoice_xml.get("Invoice/cbc:IssueTime")?.[0];
+  const issueDate = invoice_xml.get("Invoice/cbc:IssueDate")?.[0];
+  const issueTime = invoice_xml.get("Invoice/cbc:IssueTime")?.[0];
 
   // Detect if  invoice or not (not used currently assuming all simplified tax invoice)
   const invoice_type = invoice_xml
     .get("Invoice/cbc:InvoiceTypeCode")?.[0]
   ["@_name"].toString();
 
-  const datetime = `${issue_date} ${issue_time}`;
+  const datetime = `${issueDate} ${issueTime}`;
   const formatted_datetime =
     moment(datetime, "YYYY-MM-DD HH:mm:ss").toISOString();
 
@@ -72,7 +72,7 @@ export const generateQR = ({
     formatted_datetime,
     total,
     SAR_VAT_total.toString(),
-    invoice_hash,
+    invoiceHash,
     Buffer.from(digital_signature),
     public_key,
     certificate_signature,

@@ -2,7 +2,7 @@ import { XmlCanonicalizer } from "xmldsigjs";
 import xmldom from "xmldom";
 import { createHash, createSign, X509Certificate } from "crypto";
 import moment from "moment";
-import { Certificate } from "@fidm/x509"; 
+import { Certificate } from "@fidm/x509";
 import { generateQR } from "../qr/index.js";
 import defaultUBLExtensions from "../templates/ubl_sign_extension_template.js";
 import defaultUBLExtensionsSignedProperties, {
@@ -66,10 +66,10 @@ export const getCertificateHash = (certificate_string: string): string => {
 /**
  * Creates invoice digital signature according to ZATCA.*/
 export const createInvoiceDigitalSignature = (
-    invoice_hash: string,
+    invoiceHash: string,
     private_key_string: string
 ): string => {
-    const invoice_hash_bytes = Buffer.from(invoice_hash, "base64");
+    const invoice_hash_bytes = Buffer.from(invoiceHash, "base64");
     const cleanedup_private_key_string: string =
         cleanUpPrivateKeyString(private_key_string);
     const wrapped_private_key_string: string = `-----BEGIN EC PRIVATE KEY-----\n${cleanedup_private_key_string}\n-----END EC PRIVATE KEY-----`;
@@ -91,8 +91,8 @@ export const getCertificateInfo = (
     serial_number: string;
     public_key: Buffer;
     signature: Buffer;
-    } => {
-    
+} => {
+
 
     const cleanedup_certificate_string: string =
         cleanUpCertificateString(certificate_string);
@@ -144,15 +144,15 @@ interface generateSignatureXMLParams {
  * @param invoice_xml XMLDocument of invoice to be signed.
  * @param certificate_string String signed EC certificate.
  * @param private_key_string String ec-secp256k1 private key;
- * @returns signed_invoice_string: string, invoice_hash: string, qr: string
+ * @returns signedInvoiceString: string, invoiceHash: string, qr: string
  */
 export const generateSignedXMLString = ({
     invoice_xml,
     certificate_string,
     private_key_string,
 }: generateSignatureXMLParams): {
-    signed_invoice_string: string;
-    invoice_hash: string;
+    signedInvoiceString: string;
+    invoiceHash: string;
     qr: string;
 } => {
     const invoice_copy: XMLDocument = new XMLDocument(
@@ -160,18 +160,18 @@ export const generateSignedXMLString = ({
     );
 
     // 1: Invoice Hash
-    const invoice_hash = getInvoiceHash(invoice_xml);
-    logger("Info", "Signer", `Invoice hash:  ${invoice_hash}`);
+    const invoiceHash = getInvoiceHash(invoice_xml);
+    logger("Signer", "Info", `Invoice hash:  ${invoiceHash}`);
 
-    // 2: Certificate hash and certificate info
+    // 2: Certificate hash and certificate info 
     const cert_info = getCertificateInfo(certificate_string);
-    logger("Info", "Signer", `Certificate info:  ${JSON.stringify(cert_info)}`);
 
     // 3: Digital Certificate
     const digital_signature = createInvoiceDigitalSignature(
-        invoice_hash,
+        invoiceHash,
         private_key_string
     );
+
     logger("Info", "Signer", `Digital signature: ${digital_signature}`);
 
     // 4: QR
@@ -181,7 +181,7 @@ export const generateSignedXMLString = ({
         public_key: cert_info.public_key,
         certificate_signature: cert_info.signature,
     });
-    logger("Info", "Signer", `QR: ${qr}`);
+    logger("Signer", "Info", `QR: ${qr}`);
 
     // Set Signed properties
     const signed_properties_props = {
@@ -209,7 +209,7 @@ export const generateSignedXMLString = ({
 
     // UBL Extensions
     let ubl_signature_xml_string = defaultUBLExtensions(
-        invoice_hash,
+        invoiceHash,
         signed_properties_hash,
         digital_signature,
         cleanUpCertificateString(certificate_string),
@@ -227,23 +227,23 @@ export const generateSignedXMLString = ({
     unsigned_invoice_str = unsigned_invoice_str.replace("SET_QR_CODE_DATA", qr);
     const signed_invoice: XMLDocument = new XMLDocument(unsigned_invoice_str);
 
-    let signed_invoice_string: string = signed_invoice.toString({
+    let signedInvoiceString: string = signed_invoice.toString({
         no_header: false,
     });
-    signed_invoice_string = signedPropertiesIndentationFix(signed_invoice_string);
+    signedInvoiceString = signedPropertiesIndentationFix(signedInvoiceString);
 
     return {
-        signed_invoice_string: signed_invoice_string,
-        invoice_hash: invoice_hash,
+        signedInvoiceString: signedInvoiceString,
+        invoiceHash: invoiceHash,
         qr,
     };
 };
 
 
 const signedPropertiesIndentationFix = (
-    signed_invoice_string: string
+    signedInvoiceString: string
 ): string => {
-    let fixer = signed_invoice_string;
+    let fixer = signedInvoiceString;
     let signed_props_lines: string[] = fixer
         .split("<ds:Object>")[1]
         .split("</ds:Object>")[0]

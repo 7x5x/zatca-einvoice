@@ -90,10 +90,6 @@ export class ZatcaClient {
     }
 
     async issueCSID(csr: string, otp: string) {
-        logger(`Onboarding`, "info",
-            `Sending CSR and OTP to compliance. CSR Length: ${csr.length}, OTP Length: ${otp.length}`
-        );
-
         return this.request("post", "compliance", { csr }, { OTP: otp }, false);
     }
 
@@ -116,10 +112,9 @@ export class ZatcaClient {
     private async request(method: "get" | "post" | "patch", path: string, data: any = {}, headers: any = {}, auth: boolean = true) {
         try {
             const response = await this.api.request({ method, url: path, data, headers });
-            logger("Request to ZATCA API", "info", `Request to ${path} was successful `);
             return response.data;
         } catch (error) {
-            handleErrorLogs(error, "Request to ZATCA API failed");
+          logger("Zatca API","error","Error Sending Request to Zatca")
             throw error.response.data; //if its not zatca error then it will be thrown as is an empty object
         }
     }

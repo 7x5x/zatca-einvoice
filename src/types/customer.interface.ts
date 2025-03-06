@@ -1,5 +1,5 @@
 export interface ZatcaCustomerInfo {
-    NAT_number: string;
+    NATNumber: string;
     location: CustomerLocation;
     RegistrationName: string;
 }
