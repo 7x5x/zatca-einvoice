@@ -10,30 +10,30 @@ import { CSRGenerateOptions, IInvoiceType } from "./zatca/signing/generateCSR";
 
 
 const csrOptions: CSRGenerateOptions = {
-    commonName: 'John Doe',
-    organizationIdentifier: '123456789012345',
-    organizationName: 'My Organization',
-    organizationUnit: 'My Unit',
+    organizationName: 'Majd Al Khaleej Trading Est.',
+    organizationIdentifier: '300516966900003',
+    commonName: 'EGS-Mj-1',
+    organizationUnit: 'Head Office',
     country: 'SA',
     invoiceType: IInvoiceType.Standard,
     location: {
-        city: "string",
-        citySubdivision: "string",
-        street: "string",
-        plotIdentification: 1,
-        building: 1,
-        postalZone: 1,
+        city: "RAS TANNURAH",
+        citySubdivision: "Al Fayha Dist",
+        street: "AI Madinah Almunawaruh",
+        plotIdentification: 2581,
+        building: 7174,
+        postalZone: 32817,
     },
-    businessCategory: 'IT',
-    egsSolutionName: 'MySolution',
-    egsModel: 'Model123',
-    egsSerialNumber: 'SN123456'
+    businessCategory: 'TRADING',
+    egsSolutionName: 'simulation',
+    egsModel: 'IOS',
+    egsSerialNumber: '3b7f7b8e-5965-4fbf-a6f0-ef9868c9549e'
 };
 
 
 const main = async () => {
 
-    const zatcaClient = new ZatcaClient(ZatcaEnvironmentUrl.Sandbox, productionData.cirtifacaate, productionData.secret);
+    const zatcaClient = new ZatcaClient(ZatcaEnvironmentUrl.Simulation, productionData.cirtifacaate, productionData.secret);
     const standardInvoiceSender = new StandardInvoiceSender(productionData.cirtifacaate, productionData.privateKey, zatcaClient);
     const simplifiedInvoiceSender = new SimplifiedInvoiceSender(productionData.cirtifacaate, productionData.privateKey, zatcaClient);
     const egsOnboardingService = new EgsOnboardingService(csrOptions, zatcaClient);

@@ -1,10 +1,11 @@
 import * as crypto from 'crypto';
 import * as fs from 'fs';
-import { execSync, spawnSync } from 'child_process';
+import { execSync, spawn, spawnSync } from 'child_process';
 import { EGSUnitInfo, EGSUnitLocation } from '../../types/EGSUnitInfo.interface';
 import { logger } from '../../utils/logger';
 import { handleError as handleErrorLogs } from '../../utils/handleError';
 import { ZatcaEnvironmentMode } from '../../types/EZatcaEnvironment';
+import { error } from 'console';
 
 export enum IInvoiceType {
     Simplified = '0100',
@@ -45,12 +46,14 @@ class ZATCASigningCSR {
         const command = this.generateOpenSslCsrCommand();
 
         try {
-            const csr = spawnSync('openssl', command, {
-                input: privateKey,
-                encoding: 'utf-8'
-            }).stdout;
 
+            const output = execSync(command).toString();
             this.cleanupLeftoverFiles();
+          
+            const csr = Buffer.from(output).toString("base64")
+        
+            this.cleanupLeftoverFiles();
+
             logger("generate csr", "info", "CSR generated successfully.");
             return { privateKey, csr };
         } catch (error) {
@@ -79,7 +82,6 @@ class ZATCASigningCSR {
     }
 
     private setKey(): void {
-
         if (this.privateKeyProvided() && !this.key) {
             this.key = crypto.createPrivateKey({
                 key: fs.readFileSync(this.privateKeyPath as string),
@@ -96,12 +98,12 @@ class ZATCASigningCSR {
 
     private generateKey(): void {
         if (!this.privateKeyProvided()) {
-            this.key = crypto.generateKeyPairSync('ec', {
+            const tempKey = crypto.generateKeyPairSync('ec', {
                 namedCurve: 'secp256k1'
             }).privateKey;
-            // this.generatedPrivateKeyPath = `./${crypto.randomUUID()}.pem`;
-            // this.key = tempKey;
-            // fs.writeFileSync(this.generatedPrivateKeyPath, tempKey.export({ type: 'pkcs8', format: 'pem' }));
+            this.generatedPrivateKeyPath = `./${crypto.randomUUID()}.pem`;
+            this.key = tempKey;
+            fs.writeFileSync(this.generatedPrivateKeyPath, tempKey.export({ type: 'pkcs8', format: 'pem' }));
         }
     }
 
@@ -112,13 +114,12 @@ class ZATCASigningCSR {
     }
 
 
-
-    private generateOpenSslCsrCommand(): string[] {
-        return ['req', '-new', '-sha256', '-key', '/dev/stdin', '-config', this.csrConfigPath as string];
+    private generateOpenSslCsrCommand(): string {
+        return `openssl req -new -sha256 -key ${this.privateKeyPath || this.generatedPrivateKeyPath} -config ${this.csrConfigPath}`;
     }
 
     private writeCsrConfig(): void {
-        this.csrConfigPath = `./${crypto.randomUUID()}.conf`; 
+        this.csrConfigPath = `./${crypto.randomUUID()}.conf`;
         fs.writeFileSync(this.csrConfigPath, this.generateCsrConfig());
     }
 
@@ -139,33 +140,69 @@ class ZATCASigningCSR {
 
     private generateCsrConfig(): string {
         return `
-      # ------------------------------------------------------------------
-      # Default section for "req" command csr_options
-      # ------------------------------------------------------------------
-      [req]
+# ------------------------------------------------------------------
+# Default section for "req" command options
+# ------------------------------------------------------------------
+oid_section = OIDs
+[OIDs]
+certificateTemplateName = 1.3.6.1.4.1.311.20.2
 
-      prompt = no
-      utf8 = no
-      distinguished_name = my_req_dn_prompt
-      req_extensions = v3_req
+[req]
 
-      [ v3_req ]
-      1.3.6.1.4.1.311.20.2 = ASN1:PRINTABLESTRING:${this.mode}
-      subjectAltName=dirName:dir_sect
+# Password for reading in existing private key file
+# input_password = SET_PRIVATE_KEY_PASS
 
-      [ dir_sect ]
-      SN = ${this.egsSerialNumber()}
-      UID = ${this.csrOptions.organizationIdentifier}
-      title = ${this.csrOptions.invoiceType}
-      registeredAddress = ${this.csrOptions.location.building} ${this.csrOptions.location.street} ${this.csrOptions.location.city}
-      businessCategory = ${this.csrOptions.businessCategory}
+# Prompt for DN field values and CSR attributes in ASCII
+prompt = no
+default_bits = 2048
+emailAddress = info@nassaco.com
+req_extensions = v3_req
+default_md = sha 256
+req_extensions = req_ext
+distinguished_name = dn
 
-      [my_req_dn_prompt]
-      commonName = ${this.csrOptions.commonName}
-      organizationalUnitName = ${this.csrOptions.organizationUnit}
-      organizationName = ${this.csrOptions.organizationName}
-      countryName = ${this.csrOptions.country}
-    `;
+
+# Section pointer for DN field options
+distinguished_name = my_req_dn_prompt
+
+# Extensions
+req_extensions = v3_req
+
+[ v3_req ]
+#basicConstraints=CA:FALSE
+#keyUsage = digitalSignature, keyEncipherment
+# Production or Testing Template (TSTZATCA-Code-Signing - ZATCA-Code-Signing)
+1.3.6.1.4.1.311.20.2 = ASN1:PRINTABLESTRING:${this.mode}
+subjectAltName=dirName:dir_sect
+
+[ dir_sect ]
+# EGS Serial number (1-SolutionName|2-ModelOrVersion|3-serialNumber)
+SN = ${this.egsSerialNumber()}
+# VAT Registration number of TaxPayer (Organization identifier [15 digits begins with 3 and ends with 3])
+UID = ${this.csrOptions.organizationIdentifier}
+# Invoice type (TSCZ)(1 = supported, 0 not supported) (Tax, Simplified, future use, future use)
+title = ${this.csrOptions.invoiceType}
+# Location (branch address or website)
+registeredAddress = ${this.csrOptions.location.building} ${this.csrOptions.location.street}, ${this.csrOptions.location.city}
+# Industry (industry sector name)
+businessCategory = ${this.csrOptions.businessCategory}
+
+# ------------------------------------------------------------------
+# Section for prompting DN field values to create "subject"
+# ------------------------------------------------------------------
+[my_req_dn_prompt]
+# Common name (EGS TaxPayer PROVIDED ID [FREE TEXT])
+commonName = ${this.csrOptions.commonName}
+
+# Organization Unit (Branch name)
+organizationalUnitName = ${this.csrOptions.organizationUnit}
+
+# Organization name (Tax payer name)
+organizationName = ${this.csrOptions.organizationName}
+
+# ISO2 country code is required with US as default
+countryName = ${this.csrOptions.country}
+`;
     }
 }
 
