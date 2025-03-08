@@ -46,19 +46,16 @@ class ZATCASigningCSR {
         const command = this.generateOpenSslCsrCommand();
 
         try {
-
-            const output = execSync(command).toString();
-            this.cleanupLeftoverFiles();
-          
+            const output = execSync(command).toString(); 
             const csr = Buffer.from(output).toString("base64")
-        
             this.cleanupLeftoverFiles();
 
+            
             logger("generate csr", "info", "CSR generated successfully.");
             return { privateKey, csr };
         } catch (error) {
             logger("generate csr", "error", `Error generateing csr  `);
-            return { privateKey: null, csr: null };
+            throw error
         }
     }
 
