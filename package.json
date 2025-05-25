@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/src/index.js",
+    "bundle": "webpack --config webpack.config.js",
     "build": "tsc",
     "rebuild": "rmdir /s /q dist && tsc",
     "dev": "npm run rebuild && npm run start",
@@ -30,6 +31,10 @@
     "@types/lodash": "^4.17.15",
     "@types/moment": "^2.13.0",
     "@types/node": "^22.13.9",
-    "typescript": "^5.8.2"
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.2",
+    "webpack": "^5.98.0",
+    "webpack-bundle-analyzer": "^4.10.2",
+    "webpack-cli": "^6.0.1"
   }
 }

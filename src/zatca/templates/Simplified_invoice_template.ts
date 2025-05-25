@@ -103,7 +103,7 @@ export default function defaultSimplifiedTaxInvoice(props: ZATCAInvoiceProps): s
       : ZATCAInvoiceTypes.INVOICE
   );
   populated_template = populated_template.replace(
-    "SET_INVOICE_LEVEL_NOTE",
+    "SET_INVOICE_LEVEL_NOTE", 
     props.invoiceLevelNote != null
       ? `<cbc:Note>${props.invoiceLevelNote}</cbc:Note>`
       : ""

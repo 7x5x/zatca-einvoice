@@ -3,6 +3,7 @@ import { IInvoiceSender } from './IInvoiceSender';
 import { ZATCATaxInvoice } from '../zatca/xmlGenerator/ZATCATaxInvoice';
 import { ZatcaClient } from '../clients/ZatcaClient';
 import { ZATCAInvoiceProps } from '../types/invoice.interface';
+import { saveInvoice } from '../utils/removeChars';
 
 export abstract class BaseInvoiceSender implements IInvoiceSender {
     private Cirtificate: string;
@@ -30,7 +31,8 @@ export abstract class BaseInvoiceSender implements IInvoiceSender {
 
         const invoice = new ZATCATaxInvoice({ props: { ...invoiceData } });
         const signedInvoice = invoice.sign(this.Cirtificate, this.PrivateKey);
-
+        saveInvoice("error.xml", signedInvoice.signedInvoiceString, false);
+        
         return {
             signedInvoiceString: signedInvoice.signedInvoiceString,
             invoiceHash: signedInvoice.invoiceHash,

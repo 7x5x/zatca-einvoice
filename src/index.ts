@@ -15,7 +15,7 @@ const csrOptions: CSRGenerateOptions = {
     commonName: 'EGS-Mj-1',
     organizationUnit: 'Head Office',
     country: 'SA',
-    invoiceType: IInvoiceType.Standard,
+    invoiceType: IInvoiceType.Mixed,
     location: {
         city: "RAS TANNURAH",
         citySubdivision: "Al Fayha Dist",
@@ -34,15 +34,25 @@ const csrOptions: CSRGenerateOptions = {
 const main = async () => {
 
     const zatcaClient = new ZatcaClient(ZatcaEnvironmentUrl.Simulation, productionData.cirtifacaate, productionData.secret);
+   
+    // Initialize the invoice senders with the Zatca client
+    // These senders will be used to send invoices to ZATCA
+    // You can use either StandardInvoiceSender or SimplifiedInvoiceSender based on your needs
+    // For production, use the productionData.cirtifacaate and productionData.privateKey
+    // For testing, you can use the testInvoice provided in the seed data
+    // For onboarding, we will use the EgsOnboardingService
+    // Initialize the invoice senders with the Zatca client
     const standardInvoiceSender = new StandardInvoiceSender(productionData.cirtifacaate, productionData.privateKey, zatcaClient);
     const simplifiedInvoiceSender = new SimplifiedInvoiceSender(productionData.cirtifacaate, productionData.privateKey, zatcaClient);
+   
+   //onboarding
     const egsOnboardingService = new EgsOnboardingService(csrOptions, zatcaClient);
     try {
 
-        const res = await egsOnboardingService.onboard('123456');
-        // const res = await simplifiedInvoiceSender.send(testInvoice);
-        // saveInvoice("Invoice.xml", res.clearedInvoice);
-        console.log(JSON.stringify(res, null, 2));
+        // const res = await egsOnboardingService.onboard('123456');
+        const res = await simplifiedInvoiceSender.send(testInvoice);
+        saveInvoice("Invoice.xml", res.clearedInvoice);
+        console.log(res);
 
     } catch (error) {
         console.log(JSON.stringify(error, null, 2));

@@ -1,6 +1,6 @@
 import fs from "fs";
-export function saveInvoice(text: string, xmlFile:any) {
-  const invoice = Buffer.from(xmlFile, "base64").toString();
+export function saveInvoice(text: string, xmlFile: any, base64: boolean = true) {
+  const invoice = base64 ? Buffer.from(xmlFile, "base64").toString() : xmlFile;
   let filename = "";
   const charsToRemove = "-:";
   for (const char of text) {

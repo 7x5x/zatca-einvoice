@@ -14,7 +14,7 @@ const egs_info: EGSUnitInfo = {
     organizationName: "Majd Al Khaleej Trading Est",
     organizationUnit: "MJ",
     country: "SA",
-    invoiceType: IInvoiceType.Simplified,
+    invoiceType: IInvoiceType.Mixed,
     location: {
         street: "AI Madinah Almunawaruh",
         building: 7174,
@@ -42,7 +42,7 @@ const customerInfo = {
 };
 
 
-const invoiceBody: ZATCAInvoiceLineItem[] = [
+const invoiceLineItems: ZATCAInvoiceLineItem[] = [
     {
         id: 1,
         name: "BOSS",
@@ -62,21 +62,21 @@ const invoiceBody: ZATCAInvoiceLineItem[] = [
 
 export const testInvoice: ZATCAInvoiceProps = {
     egsInfo: egs_info,
-    customerInfo: customerInfo,
+   // customerInfo: customerInfo,
     uuid: crypto.randomUUID(),
     invoiceSerialNumber: "24278",
     invoiceCounter: 24278,
     conversionRate: 3.75,
     
     paymentMethod: ZATCAPaymentMethods.BANK_ACCOUNT,
-    documentCurrencyCode: DocumentCurrencyCode.USD,
+    documentCurrencyCode: DocumentCurrencyCode.SAR,
 
     deliveryDate: futureDate.format("YYYY-MM-DD"),
     issueDate: moment(new Date()).format("YYYY-MM-DD"),
     issueTime: moment(new Date()).format("HH:mm:ss"),
     PIH: "739zhJpzCtii4PgUNGWGMpRnHl0KjtlohI8SSuU6Uko=",
 
-    lineItems: invoiceBody,
+    lineItems: invoiceLineItems,
 
 };
 
