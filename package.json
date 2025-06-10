@@ -1,5 +1,5 @@
 {
-  "name": "zatca-api",
+  "name": "zatca-einvoice",
   "version": "1.0.0",
   "description": "This TypeScript-based NPM package provides a structured, reusable class for integrating with ZATCA's API, allowing users to specify environments and inject custom base URLs. 🚀",
   "main": "index.js",
@@ -11,7 +11,48 @@
     "dev": "npm run rebuild && npm run start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Ali Al-Gabal",
+  "author": {
+    "name": "Ali Al-Gabal",
+    "email": "alialjabal4@gmail.com",
+    "url": "https://aligabal.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/7x5x/zatca-einvoice.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aligabal/zatca-api/issues"
+  },
+  "homepage": "https://github.com/aligabal/zatca-api#readme",
+  "keywords": [
+    "ZATCA",
+    "e-invoice",
+    "e-invoicing",
+    "e-invoice phase 2",
+    "ZATCA phase 2",
+    "integration",
+    "Saudi Arabia",
+    "KSA",
+    "FATOORA",
+    "invoice",
+    "compliance",
+    "Tax Authority",
+    "ZATCA API",
+    "SDK",
+    "typescript",
+    "API client",
+    "clearance",
+    "reporting",
+    "uuid",
+    "qr-code",
+    "UBL",
+    "XML",
+    "digital signature",
+    "cryptographic stamp",
+    "certificate",
+    "TLV",
+    "compliant invoice"
+  ],
   "license": "ISC",
   "dependencies": {
     "@fidm/x509": "^1.2.1",
